@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Kütüphaneler | Ensar Hamzaçebi]]></title>
+  <link href="http://ensr.github.io/blog/categories/kutuphaneler/atom.xml" rel="self"/>
+  <link href="http://ensr.github.io/"/>
+  <updated>2016-05-11T17:55:20+03:00</updated>
+  <id>http://ensr.github.io/</id>
+  <author>
+    <name><![CDATA[Ensar Hamzaçebi]]></name>
+    <email><![CDATA[hamzacebi.ensar@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Her Android Developer'in Bilmesi Gereken Kütüphaneler 02]]></title>
+    <link href="http://ensr.github.io/blog/2016/02/23/her-android-developerin-bilmesi-gereken-kutuphaneler-02/"/>
+    <updated>2016-02-23T14:54:28+02:00</updated>
+    <id>http://ensr.github.io/blog/2016/02/23/her-android-developerin-bilmesi-gereken-kutuphaneler-02</id>
+    <content type="html"><![CDATA[<p><img class="center" src="/images/libraries.jpg"></p>
+
+<!-- more -->
+
+
+<h3>1. <a href="https://github.com/Raizlabs/DBFlow">DBFlow</a></h3>
+
+<p>Eğer projenizde aşırı komplex data tutmayı planlıyorsanız, DBFlow kullanmanızı tavsiye ederim. Kendi github sayfalarında denilene göre: &ldquo;DBFlow veritabanı kodlarını sizin için yazan hızlı, güçlü ve basit bir ORM android veritabanı kütüphanesidir&rdquo; İşte size küçük bi örnek.</p>
+
+<pre><code class="java">// Query a List
+new Select().from(SomeTable.class).queryList();
+new Select().from(SomeTable.class).where(conditions).queryList();
+
+// Query Single Model
+new Select().from(SomeTable.class).querySingle();
+new Select().from(SomeTable.class).where(conditions).querySingle();
+
+// Query a Table List and Cursor List
+new Select().from(SomeTable.class).where(conditions).queryTableList();
+new Select().from(SomeTable.class).where(conditions).queryCursorList();
+
+// SELECT methods
+new Select().distinct().from(table).queryList();
+new Select().all().from(table).queryList();
+new Select().avg(SomeTable$Table.SALARY).from(SomeTable.class).queryList();
+new Select().method(SomeTable$Table.SALARY, "MAX").from(SomeTable.class).queryList();
+</code></pre>
+
+<h3>2. <a href="https://github.com/bumptech/glide">Glide</a></h3>
+
+<p>Glide image yüklenmesinde kullanılan güzel bir kütüphanedir. Alternatif olarak <a href="https://github.com/nostra13/Android-Universal-Image-Loader">Universal Image Loader</a> ve <a href="https://github.com/square/picasso">Picasso</a>&lsquo;yu verebiliriz fakat benim görüşüm en iyi tercih glide olucaktır.</p>
+
+<p>İşte size glide kullanılarak URL'den imageView'a resim yüklenmesinin nasıl yapıldığına dair bir örnek.</p>
+
+<pre><code class="java">ImageView imageView = (ImageView) findViewById(R.id.my_image_view);
+
+Glide.with(this).load("http://goo.gl/gEgYUd").into(imageView);
+</code></pre>
+
+<h3>3. <a href="http://jakewharton.github.io/butterknife/">Butterknife</a></h3>
+
+<p>ButterKnife android view'larını fields ve methodlara bağlamaya yarayan bir kütüphanedir (Örneğin herhangi bir view'a onClick methodu bağlamak). Basit bir örnek:</p>
+
+<pre><code class="java">class ExampleActivity extends Activity {
+  @Bind(R.id.title) TextView title;
+  @Bind(R.id.subtitle) TextView subtitle;
+  @Bind(R.id.footer) TextView footer;
+
+  @Override public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.simple_activity);
+    ButterKnife.bind(this);
+    // TODO Use fields...
+  }
+}
+</code></pre>
+
+<p>Şimdilik bu kadar. Umarım faydalı olabilmişimdir. İyi çalışmalar.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Her Android Developer'in Bilmesi Gereken Kütüphaneler 01]]></title>
+    <link href="http://ensr.github.io/blog/2016/02/22/her-android-developerin-bilmesi-gereken-kutuphaneler-01/"/>
+    <updated>2016-02-22T17:21:24+02:00</updated>
+    <id>http://ensr.github.io/blog/2016/02/22/her-android-developerin-bilmesi-gereken-kutuphaneler-01</id>
+    <content type="html"><![CDATA[<p><img class="center" src="/images/top_5.png"></p>
+
+<p>Kütüphaneler yazılım dünyasının olmazsa olmazlarıdır diyebiliriz. Android programlamada da geçerli olan bir durum olduğu için sizlere her android developer'ın bilmesi gereken 3 kütüphaneden şöyle kısace bahsetmek istiyorum. Kütüphanelerin kendi linklerini başlıklarda verdim kütüphaneler hakkında ayrıntılı bilgi edinmek isterseniz başlıklara tıklayabilirsiniz.</p>
+
+<!-- more -->
+
+
+<h3>1. <a href="https://github.com/google/gson">GSON</a></h3>
+
+<p>Gson, java objelerini JSON'dan serialize ve deserialize etmemizi sağlayan bir java kütüphanesidir. Bu kütüphaneyi API'ler ile iletişim kurmakta sık sık kullanırız. API'den gelen json datanın parse edilmesi ve ya API'ye gönderilmek üzere dataların JSON'a çevirilmesinde kullanılır diyebiliriz.</p>
+
+<pre><code class="java">// Serialize 
+String userJSON = new Gson().toJson(user);
+
+// Deserialize
+User user = new Gson().fromJson(userJSON, User.class);
+</code></pre>
+
+<h3>2. <a href="http://square.github.io/retrofit/">RETROFIT</a></h3>
+
+<p>Kendi sitelerinden:&ldquo;Retrfit REST API'ınızı bir java interface'a dönüştürür.&rdquo; Bu bir projedeki API isteklerini organize etmekte kullanılabilecek çok zarif bir yöntem. Request metodu ve relative URL, bir annotation ile eklenir. Buda kodunuzu çok basit ve temiz kılar.</p>
+
+<p>Annotationlar ile kolay bir şekilde request body ekleyebilir, URL ve ya header'ı manipule edebilir ve parametre ekleyebilirsiniz.</p>
+
+<pre><code class="java">public interface RetrofitInterface {
+
+    // asynchronously with a callback
+    @GET("/api/user")
+    User getUser(@Query("user_id") int userId, Callback&lt;User&gt; callback);
+
+    // synchronously
+    @POST("/api/user/register")
+    User registerUser(@Body User user);
+}
+
+
+// example
+RetrofitInterface retrofitInterface = new RestAdapter.Builder()
+            .setEndpoint(API.API_URL).build().create(RetrofitInterface.class);
+
+// fetch user with id 2048
+retrofitInterface.getUser(2048, new Callback&lt;User&gt;() {
+    @Override
+    public void success(User user, Response response) {
+
+    }
+
+    @Override
+    public void failure(RetrofitError retrofitError) {
+
+    }
+});
+</code></pre>
+
+<p>Son olarak retrofit gson kullanmaktadır.</p>
+
+<h3>3. <a href="http://greenrobot.github.io/EventBus/">EVENTBUS</a></h3>
+
+<p>Eventbus uygulamanızın farklı kısımlarının birbiri ile haberleşmasini kolaylaştıran çok kullanışlı bir kütüphanedir. Mesela herhangi bir activity'den halihazırda çalışan bir servise herhangi bişey gönderirken ve ya fragmentlar arasında iletişimi kolaylaştırmada kullanılabilir.</p>
+
+<p>Dataların tutulduğu bir sınıf oluştur.</p>
+
+<pre><code class="java">
+public class PositionEvent {
+    private int positionX, positionY;
+
+    public PositionEvent(int x, int y){
+        this.positionX = x;
+        this.positionY = y;
+    }
+
+    public int getPositionX(){
+        return positionX;
+    }
+
+    public int getPositionY(){
+        return positionY;
+    }
+}
+</code></pre>
+
+<p>Eventin tetikleneceği activityde register ol.</p>
+
+<pre><code class="java">    private EventBus bus = EventBus.getDefault();
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        ...
+        bus.register(this);
+        ...
+    }
+
+    @Subscribe
+    public void onEvent(EyePositionEvent event){
+    //gelen data ile bişeyler yap. Burası event tetiklendiğinde 
+    //çalıştırılacak yer.
+    }
+</code></pre>
+
+<p>Son olarak eventin tetikleneceği yer.</p>
+
+<pre><code>private EventBus bus = EventBus.getDefault();
+...
+PositionEvent event = null;
+...
+//cx ve cy kullanılacak datalar.
+event = new EyePositionEvent(cx, cy);
+bus.post(event);
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

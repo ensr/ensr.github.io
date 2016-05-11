@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Speech-to-text | Ensar Hamzaçebi]]></title>
+  <link href="http://ensr.github.io/blog/categories/speech-to-text/atom.xml" rel="self"/>
+  <link href="http://ensr.github.io/"/>
+  <updated>2016-05-11T17:55:20+03:00</updated>
+  <id>http://ensr.github.io/</id>
+  <author>
+    <name><![CDATA[Ensar Hamzaçebi]]></name>
+    <email><![CDATA[hamzacebi.ensar@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Google Speech to Text - Sesi Yazıya Dönüştürme]]></title>
+    <link href="http://ensr.github.io/blog/2016/03/10/google-speech-to-text-sesi-yaziya-donusturme/"/>
+    <updated>2016-03-10T16:35:02+02:00</updated>
+    <id>http://ensr.github.io/blog/2016/03/10/google-speech-to-text-sesi-yaziya-donusturme</id>
+    <content type="html"><![CDATA[<p><img class="center" src="/images/speechtotext3.jpg"></p>
+
+<p>Android speech to text'i inbuild özellik olarak sunmaktadır. Uygulamanızın kullanıcılarla olan etkileşimini arttırmak istiyorsanız, speech to text çok işinize yarayabilir. Google speech to text'i kullanarak kullanıcılardan konuşmasını isteyebilir ve söylediklerine göre işlemler yaptırarak harika işler çıkartabilirsiniz.</p>
+
+<!--more-->
+
+
+<p>Speech to text'in çalıma prensibi çok basit. Kaydedilen ses server' a gönderiliyor, server sesi text'e dönüştürerek tekrar uygulamanıza gönderiyor.</p>
+
+<p>Olanakları bi düşünün derim ben ;)</p>
+
+<p><img class="center" src="/images/opportunity.jpg"></p>
+
+<p>Evet şimdi nasıl yapacağımızı öğrenelim. İlk olarak örnek bir proje oluşturuyoruz ve <code>res/valuses</code> dizinindeki <code>strings.xml</code> dosyasını açıp aşşağıdaki string value'ları ekliyoruz.</p>
+
+<pre><code class="xml strings.xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;resources&gt;
+    &lt;string name="app_name"&gt;Speech To Text&lt;/string&gt;
+    &lt;string name="action_settings"&gt;Settings&lt;/string&gt;
+    &lt;string name="hello_world"&gt;Hello world!&lt;/string&gt;
+    &lt;string name="speech_prompt"&gt;Say something&amp;#8230;&lt;/string&gt;
+    &lt;string name="speech_not_supported"&gt;Sorry! Your device doesn\'t support speech input&lt;/string&gt;
+    &lt;string name="tap_on_mic"&gt;Tap on mic to speak&lt;/string&gt;
+&lt;/resources&gt;
+</code></pre>
+
+<p>İkinci olarak aynı dizin altındaki <code>colors.xml</code> dosyasını açıp aşşağıdaki gibi güncelliyoruz.</p>
+
+<pre><code class="xml color.xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;resources&gt;
+    &lt;color name="white"&gt;#ffffff&lt;/color&gt;
+    &lt;color name="bg_gradient_start"&gt;#31244e&lt;/color&gt;
+    &lt;color name="bg_gradient_end"&gt;#6b394c&lt;/color&gt;
+&lt;/resources&gt;
+</code></pre>
+
+<p>Şimid de main activity'nin xml sayfasını değiştiriyoruz.</p>
+
+<pre><code class="xml activity_main.xml">&lt;RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_gradient"
+    android:orientation="vertical" &gt;
+
+    &lt;TextView
+        android:id="@+id/txtSpeechInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:textColor="@color/white"
+        android:textSize="26dp"
+        android:textStyle="normal" /&gt;
+
+    &lt;LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="60dp"
+        android:gravity="center"
+        android:orientation="vertical" &gt;
+
+        &lt;ImageButton
+            android:id="@+id/btnSpeak"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/ico_mic" /&gt;
+
+        &lt;TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/tap_on_mic"
+            android:textColor="@color/white"
+            android:textSize="15dp"
+            android:textStyle="normal" /&gt;
+    &lt;/LinearLayout&gt;
+
+&lt;/RelativeLayout&gt;
+</code></pre>
+
+<p>Uygulamanızın ekran görüntüsü şu şekilde olmalı.</p>
+
+<p><img class="center" src="/images/speech_to_text.png"></p>
+
+<p>Yalnız ekrandaki icon sizde olmadığı için istediğiniz bi icon kullanabilirsiniz.</p>
+
+<p>Son olarak da main activity'mizi açıyoruz ve kodlamamıza devam ediyoruz. Burada yapmamız gereken iki işlem var. Birincisi <code>RecognizerIntent</code> &lsquo;i başlatmak, ikincisi ise speech response'larını almak.</p>
+
+<p>Intent'i <code>ACTION_RECOGNIZE_SPEECH</code>, <code>LANGUAGE_MODEL_FREE_FORM</code> ve <code>EXTRA_PROMPT</code> flaglarını set ederek çağırıyoruz. Ses girişi başarılı olduktan sonra ise response'u <code>onActivityResult</code> methodunda yakalayıp ekrana basıyoruz.</p>
+
+<pre><code class="java MainActivity.java">package com.ensr.speechtotext;
+
+import java.util.ArrayList;
+import java.util.Locale;
+
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.os.Bundle;
+import android.speech.RecognizerIntent;
+import android.view.Menu;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class MainActivity extends Activity {
+
+    private TextView txtSpeechInput;
+    private ImageButton btnSpeak;
+    private final int REQ_CODE_SPEECH_INPUT = 100;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        txtSpeechInput = (TextView) findViewById(R.id.txtSpeechInput);
+        btnSpeak = (ImageButton) findViewById(R.id.btnSpeak);
+
+        // action barı gizle
+        getActionBar().hide();
+
+        btnSpeak.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                promptSpeechInput();
+            }
+        });
+
+    }
+
+    /**
+     * google speech input dialog'u göster
+     * */
+    private void promptSpeechInput() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+                getString(R.string.speech_prompt));
+        try {
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+        } catch (ActivityNotFoundException a) {
+            Toast.makeText(getApplicationContext(),
+                    getString(R.string.speech_not_supported),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * Respons'u yakala
+     * */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+        case REQ_CODE_SPEECH_INPUT: {
+            if (resultCode == RESULT_OK &amp;&amp; null != data) {
+
+                ArrayList&lt;String&gt; result = data
+                        .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                txtSpeechInput.setText(result.get(0));
+            }
+            break;
+        }
+
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+}
+</code></pre>
+
+<p>Evet arkadaşlar artık uygulamamızı telefon üzerinde deneyebilirsiniz. Tebrikler! Ne dediğinizi anlayan bir uygulamanız var. Artık ona istediğinizi söyleyebilirsiniz (!)</p>
+
+<p><img class="center" src="/images/speechtotext2.jpg"></p>
+
+<p>Umarım faydalı bi yazı olmuştur. İyi kodlamalar.</p>
+]]></content>
+  </entry>
+  
+</feed>

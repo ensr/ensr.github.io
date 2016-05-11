@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Android | Ensar Hamzaçebi]]></title>
   <link href="http://ensr.github.io/blog/categories/android/atom.xml" rel="self"/>
   <link href="http://ensr.github.io/"/>
-  <updated>2016-05-11T17:41:27+03:00</updated>
+  <updated>2016-05-11T17:55:20+03:00</updated>
   <id>http://ensr.github.io/</id>
   <author>
     <name><![CDATA[Ensar Hamzaçebi]]></name>
@@ -14,276 +14,488 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Android Face Detection 03 - Landmarks Kullanımı]]></title>
-    <link href="http://ensr.github.io/blog/2016/02/19/android-face-detection-03-landmarks-kullanimi/"/>
-    <updated>2016-02-19T16:28:21+02:00</updated>
-    <id>http://ensr.github.io/blog/2016/02/19/android-face-detection-03-landmarks-kullanimi</id>
-    <content type="html"><![CDATA[<p><img class="center" src="/images/face_poster.jpg"></p>
+    <title type="html"><![CDATA[Google Speech to Text - Sesi Yazıya Dönüştürme]]></title>
+    <link href="http://ensr.github.io/blog/2016/03/10/google-speech-to-text-sesi-yaziya-donusturme/"/>
+    <updated>2016-03-10T16:35:02+02:00</updated>
+    <id>http://ensr.github.io/blog/2016/03/10/google-speech-to-text-sesi-yaziya-donusturme</id>
+    <content type="html"><![CDATA[<p><img class="center" src="/images/speechtotext3.jpg"></p>
 
-<p>Arkadaşlar bu yazımda landmarklardan bahsetmeye çalışıcam biraz. Evet landmarklar en basit haliyle Face API tarafından tespit edilen yüzler üzerindeki özel noktadara verilen isimdir. Yani sol göz, sağ göz, burun ucu, dudak sonu gibi yüzün belirli yerlerini işaret eden noktalardır.</p>
+<p>Android speech to text'i inbuild özellik olarak sunmaktadır. Uygulamanızın kullanıcılarla olan etkileşimini arttırmak istiyorsanız, speech to text çok işinize yarayabilir. Google speech to text'i kullanarak kullanıcılardan konuşmasını isteyebilir ve söylediklerine göre işlemler yaptırarak harika işler çıkartabilirsiniz.</p>
 
-<!-- more -->
+<!--more-->
 
 
-<p>Şimdi de landmarkları nasıl kullanıyoruz onu görelim. MainActivity'de <code>onCreate</code> methodumuza bakalım.</p>
+<p>Speech to text'in çalıma prensibi çok basit. Kaydedilen ses server' a gönderiliyor, server sesi text'e dönüştürerek tekrar uygulamanıza gönderiyor.</p>
 
-<pre><code class="java MainActivity.java">@Override
-protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+<p>Olanakları bi düşünün derim ben ;)</p>
 
-    InputStream stream = getResources().openRawResource(R.raw.image03);
-    Bitmap bitmap = BitmapFactory.decodeStream(stream);
+<p><img class="center" src="/images/opportunity.jpg"></p>
 
-    FaceDetector detector = new FaceDetector.Builder(getApplicationContext())
-            .setTrackingEnabled(false)
-            .setLandmarkType(FaceDetector.ALL_LANDMARKS)
-            .build();
+<p>Evet şimdi nasıl yapacağımızı öğrenelim. İlk olarak örnek bir proje oluşturuyoruz ve <code>res/valuses</code> dizinindeki <code>strings.xml</code> dosyasını açıp aşşağıdaki string value'ları ekliyoruz.</p>
 
-    Frame frame = new Frame.Builder().setBitmap(bitmap).build();
-    SparseArray&lt;Face&gt; faces = detector.detect(frame);
-
-    CustomView overlay = (CustomView) findViewById(R.id.customView);
-    overlay.setContent(bitmap, faces);
-
-    detector.release();
-
-}
+<pre><code class="xml strings.xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;resources&gt;
+    &lt;string name="app_name"&gt;Speech To Text&lt;/string&gt;
+    &lt;string name="action_settings"&gt;Settings&lt;/string&gt;
+    &lt;string name="hello_world"&gt;Hello world!&lt;/string&gt;
+    &lt;string name="speech_prompt"&gt;Say something&amp;#8230;&lt;/string&gt;
+    &lt;string name="speech_not_supported"&gt;Sorry! Your device doesn\'t support speech input&lt;/string&gt;
+    &lt;string name="tap_on_mic"&gt;Tap on mic to speak&lt;/string&gt;
+&lt;/resources&gt;
 </code></pre>
 
-<p>Burada önceki örneklerimizden farklı olarak Face detectorumuzu oluştururken <code>setLandmarkType(FaceDetector.ALL_LANDMARKS)</code> &lsquo;ın eklenmiş olmasıdır.</p>
+<p>İkinci olarak aynı dizin altındaki <code>colors.xml</code> dosyasını açıp aşşağıdaki gibi güncelliyoruz.</p>
 
-<p>Bir sonraki adım, daha önceden oluşturduğumuz <code>CustomView</code> sınıfına landmarkları işaretliyecek fonksiyonu eklemek.</p>
-
-<pre><code class="java CustomView.java">private void drawFaceAnnotations(Canvas canvas, double scale) {
-    Paint paint = new Paint();
-    paint.setColor(Color.GREEN);
-    paint.setStyle(Paint.Style.STROKE);
-    paint.setStrokeWidth(5);
-
-    for (int i = 0; i &lt; mFaces.size(); ++i) {
-        Face face = mFaces.valueAt(i);
-        for (Landmark landmark : face.getLandmarks()) {
-            int cx = (int) (landmark.getPosition().x * scale);
-            int cy = (int) (landmark.getPosition().y * scale);
-            canvas.drawCircle(cx, cy, 10, paint);
-        }
-    }
-
-}
+<pre><code class="xml color.xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;resources&gt;
+    &lt;color name="white"&gt;#ffffff&lt;/color&gt;
+    &lt;color name="bg_gradient_start"&gt;#31244e&lt;/color&gt;
+    &lt;color name="bg_gradient_end"&gt;#6b394c&lt;/color&gt;
+&lt;/resources&gt;
 </code></pre>
 
-<p>Sınıfın tamamını merak edenler konu ile alakalı bir önceki <a href="http://ensr.github.io/blog/2016/02/18/android-face-detection-02/">yazıya</a> bakabilirler.</p>
-
-<p>Fonksiyonu ekledikten sonra <code>onDraw()</code> &lsquo;da <code>drawFaceRectangle()</code> yerine yeni eklediğimiz <code>drawFaceAnnotations()</code> fonksiyonunu çağırmayı unutmuyoruz tabiki.</p>
-
-<pre><code>drawFaceAnnotations(canvas, scale);
-</code></pre>
-
-<p>Uygulamamızı bu şekilde çalıştırdığımızda Face Detection'a bitmap olarak verdiğiniz yüz resminde şu şekilde landmarkların işaretlendiğini görebilirsiniz.</p>
-
-<p><img class="center" src="/images/face_landmarks.png"></p>
-
-<p>Şimdilik burada bırakıyorum ancan sonraki yazıda biraz da <code>classification</code> &lsquo;dan bahsedicez. Herhangi bir hata ile karşılaşırsanız yorum yazmayı unutmayın. Kendinize iyi bakın.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Android Face Detection 02 - Yüzleri Kara İçine Alma]]></title>
-    <link href="http://ensr.github.io/blog/2016/02/18/android-face-detection-02-yuzleri-kara-icine-alma/"/>
-    <updated>2016-02-18T17:32:10+02:00</updated>
-    <id>http://ensr.github.io/blog/2016/02/18/android-face-detection-02-yuzleri-kara-icine-alma</id>
-    <content type="html"><![CDATA[<p><img class="center" src="/images/face_detect_02.jpg"></p>
-
-<p>İlk yazımda google service api ile bitmap üzerinde face detection'ın nasıl gerçekleştirildiğinden bahsetmeye çalışmıştım. Şimdi ise işi biraz daha ilerletip tanımlanan yüz üzerindeki işlemlerden biraz bahsedicem.</p>
-
-<!-- more -->
-
-
-<h3>Yüzleri Kare İçine Alma</h3>
-
-<p>Tespit edilen yüzleri kare içerisine almak için <code>Viev</code> sınıfından extend edilen <code>CustomView</code> sınıfını oluşturuyoruz.</p>
-
-<pre><code class="java CustomView.java">package com.ensr.facedetectiondemo;
-
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.util.AttributeSet;
-import android.util.SparseArray;
-import android.view.View;
-
-import com.google.android.gms.vision.face.Face;
-
-public class CustomView extends View {
-
-    private Bitmap mBitmap;
-    private SparseArray&lt;Face&gt; mFaces;
-
-    public CustomView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    void setContent(Bitmap bitmap, SparseArray&lt;Face&gt; faces) {
-        mBitmap = bitmap;
-        mFaces = faces;
-        invalidate();
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        if ((mBitmap != null) &amp;&amp; (mFaces != null)) {
-            double scale = drawBitmap(canvas);
-            drawFaceRectangle(canvas, scale);
-        }
-    }
-
-    private double drawBitmap(Canvas canvas) {
-        double viewWidth = canvas.getWidth();
-        double viewHeight = canvas.getHeight();
-        double imageWidth = mBitmap.getWidth();
-        double imageHeight = mBitmap.getHeight();
-        double scale = Math.min(viewWidth / imageWidth, viewHeight / imageHeight);
-
-        Rect destBounds = new Rect(0, 0, (int)(imageWidth * scale), (int)(imageHeight * scale));
-        canvas.drawBitmap(mBitmap, null, destBounds, null);
-        return scale;
-    }
-
-    private void drawFaceRectangle(Canvas canvas, double scale) {
-        Paint paint = new Paint();
-        paint.setColor(Color.GREEN);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(5);
-
-        for (int i = 0; i &lt; mFaces.size(); ++i) {
-            Face face = mFaces.valueAt(i);
-            canvas.drawRect((float)(face.getPosition().x * scale),
-                (float)(face.getPosition().y * scale),
-                (float)((face.getPosition().x + face.getWidth()) * scale),
-                (float)((face.getPosition().y + face.getHeight()) * scale),
-                paint);
-        }
-    }
-
-}
-</code></pre>
-
-<p>Yukarıdaki kodda <code>onDraw</code> methodunu override ediyoruz ve tespit edilen yüzleri kare içerisine alması için <code>drawFaceRectangle</code> fonksitonunu çağırıyoruz.</p>
-
-<p>Daha sonra activity_main.xml'imi şu şekilde değiştiriyoruz.</p>
+<p>Şimid de main activity'nin xml sayfasını değiştiriyoruz.</p>
 
 <pre><code class="xml activity_main.xml">&lt;RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".MainActivity"&gt;
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_gradient"
+    android:orientation="vertical" &gt;
 
-    &lt;com.ensr.facedetectiondemo.CustomView
-        android:id="@+id/customView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" /&gt;
+    &lt;TextView
+        android:id="@+id/txtSpeechInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:textColor="@color/white"
+        android:textSize="26dp"
+        android:textStyle="normal" /&gt;
+
+    &lt;LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="60dp"
+        android:gravity="center"
+        android:orientation="vertical" &gt;
+
+        &lt;ImageButton
+            android:id="@+id/btnSpeak"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/ico_mic" /&gt;
+
+        &lt;TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/tap_on_mic"
+            android:textColor="@color/white"
+            android:textSize="15dp"
+            android:textStyle="normal" /&gt;
+    &lt;/LinearLayout&gt;
 
 &lt;/RelativeLayout&gt;
 </code></pre>
 
-<p>MainActivity'de daha önceki yazımda oluşturduğumuz <code>TextView</code>&lsquo;ı kaldırıp şu şekilde güncelliyoruz.</p>
+<p>Uygulamanızın ekran görüntüsü şu şekilde olmalı.</p>
 
-<pre><code class="java MainActivity.java">@Override
-protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+<p><img class="center" src="/images/speech_to_text.png"></p>
 
-    InputStream stream = getResources().openRawResource(R.raw.image01);
-    Bitmap bitmap = BitmapFactory.decodeStream(stream);
+<p>Yalnız ekrandaki icon sizde olmadığı için istediğiniz bi icon kullanabilirsiniz.</p>
 
-    FaceDetector detector = new FaceDetector.Builder(getApplicationContext())
-            .setTrackingEnabled(false)
-            .build();
+<p>Son olarak da main activity'mizi açıyoruz ve kodlamamıza devam ediyoruz. Burada yapmamız gereken iki işlem var. Birincisi <code>RecognizerIntent</code> &lsquo;i başlatmak, ikincisi ise speech response'larını almak.</p>
 
-    Frame frame = new Frame.Builder().setBitmap(bitmap).build();
-    SparseArray&lt;Face&gt; faces = detector.detect(frame);
+<p>Intent'i <code>ACTION_RECOGNIZE_SPEECH</code>, <code>LANGUAGE_MODEL_FREE_FORM</code> ve <code>EXTRA_PROMPT</code> flaglarını set ederek çağırıyoruz. Ses girişi başarılı olduktan sonra ise response'u <code>onActivityResult</code> methodunda yakalayıp ekrana basıyoruz.</p>
 
-    // CustonView i oluştur, bitmap ve tespit edilen yüzlerin listesini ver
-    CustomView overlay = (CustomView) findViewById(R.id.customView);
-    overlay.setContent(bitmap, faces);
+<pre><code class="java MainActivity.java">package com.ensr.speechtotext;
 
-    detector.release();
+import java.util.ArrayList;
+import java.util.Locale;
+
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.os.Bundle;
+import android.speech.RecognizerIntent;
+import android.view.Menu;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class MainActivity extends Activity {
+
+    private TextView txtSpeechInput;
+    private ImageButton btnSpeak;
+    private final int REQ_CODE_SPEECH_INPUT = 100;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        txtSpeechInput = (TextView) findViewById(R.id.txtSpeechInput);
+        btnSpeak = (ImageButton) findViewById(R.id.btnSpeak);
+
+        // action barı gizle
+        getActionBar().hide();
+
+        btnSpeak.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                promptSpeechInput();
+            }
+        });
+
+    }
+
+    /**
+     * google speech input dialog'u göster
+     * */
+    private void promptSpeechInput() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+                getString(R.string.speech_prompt));
+        try {
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+        } catch (ActivityNotFoundException a) {
+            Toast.makeText(getApplicationContext(),
+                    getString(R.string.speech_not_supported),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * Respons'u yakala
+     * */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+        case REQ_CODE_SPEECH_INPUT: {
+            if (resultCode == RESULT_OK &amp;&amp; null != data) {
+
+                ArrayList&lt;String&gt; result = data
+                        .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                txtSpeechInput.setText(result.get(0));
+            }
+            break;
+        }
+
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
 
 }
 </code></pre>
 
-<p>Evet bu uygulamayı bu haliyle çalıştırdığımızda ekran görüntünüz şunun gibi bişey olacaktır.</p>
+<p>Evet arkadaşlar artık uygulamamızı telefon üzerinde deneyebilirsiniz. Tebrikler! Ne dediğinizi anlayan bir uygulamanız var. Artık ona istediğinizi söyleyebilirsiniz (!)</p>
 
-<p><img class="center" src="/images/face_detect_03.png"></p>
+<p><img class="center" src="/images/speechtotext2.jpg"></p>
 
-<p>Şimdilik bu kadar bir sonraki yazımda göz burun ve ağız gibi yüzün bazı bölgelerinin yerlerinin tespit edilmesinden bahsetmeye çalışıcam. Umarım yazımı faydalı bulmuşsunuzdur. Kafanıza takılan bişey olursa yorum yazmaktan çekinmeyin.</p>
-
-<p>İyi günler.</p>
+<p>Umarım faydalı bi yazı olmuştur. İyi kodlamalar.</p>
 ]]></content>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Android Face Detection 01 - Başlangıç]]></title>
-    <link href="http://ensr.github.io/blog/2016/02/18/android-face-detection-01/"/>
-    <updated>2016-02-18T15:45:52+02:00</updated>
-    <id>http://ensr.github.io/blog/2016/02/18/android-face-detection-01</id>
-    <content type="html"><![CDATA[<p><img class="center" src="/images/face_detect.png"></p>
-
-<p>Android'de face detection işlemini gerçekleştirmek için Google Play Service'i kullanabiliriz.Bunun için yapmamız gereken ilk şey google play service'in gradle dependences'ini projemize eklemek olacaktır.</p>
-
-<p>Android Studio'da oluşturduğumuz projemizin /app dizini altındaki build.gradle dosyasını açarak dependencies kısmına aşşağıdaki satırı ekliyoruz ve Sync ediyoruz.</p>
+    <title type="html"><![CDATA[Android Studio Device Null Hatası]]></title>
+    <link href="http://ensr.github.io/blog/2016/03/09/android-studio-device-null-hatasi/"/>
+    <updated>2016-03-09T13:29:30+02:00</updated>
+    <id>http://ensr.github.io/blog/2016/03/09/android-studio-device-null-hatasi</id>
+    <content type="html"><![CDATA[<p>Android Studio ile yazdığınız bir projeyi telefonunuzda ve ya tablediniz de denemek istediğinizde device'ı null olarak görüyorsanız ve Compatible bölümünde <code>No, minSdk(API 14) &gt; deviceSdk(API 1)</code> yazısını görüyorsanız. Bu hatanın sebebi adb doğru izinler ile bağlantı kuramadığındandır. Bunu düzeltmenin çok kolay bir yolu var.</p>
 
 <!-- more -->
 
 
-<pre><code class="xml build.gradle">compile 'com.google.android.gms:play-services:7.8.0'
+<ol>
+<li><p>Android Studio'dan terminali açıyoruz ve <code>~/Android/Sdk/platform-tools</code> dizinine gidiyoruz.</p>
+
+<pre><code> $ cd ~/Android/Sdk/platform-tools
+</code></pre></li>
+<li><p>Adb device'ı calıştırıyoruz:</p>
+
+<pre><code> $ ./adb device
+</code></pre></li>
+<li><p>Eğer size <code>&lt;deviceIdentifier&gt; no permissions</code> dönüyorsa adb &lsquo;yi restart ediyoruz.</p>
+
+<pre><code> $ ./adb kill-server
+ $ sudo ./adb devices
+</code></pre></li>
+<li><p>Eğer işe yararsa şu şekilde bir çıktı almanız gerekiyor:</p>
+
+<pre><code> List of devices attached
+ * daemon not running. starting it now on port 5037 *
+ * daemon started successfully *
+ &lt;deviceIdentifier&gt;  device
+</code></pre></li>
+</ol>
+
+
+<p>Artık Sdk versiyon hatası almiyacaksınız. İyi kodlamalar.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Her Android Developer'in Bilmesi Gereken Kütüphaneler 02]]></title>
+    <link href="http://ensr.github.io/blog/2016/02/23/her-android-developerin-bilmesi-gereken-kutuphaneler-02/"/>
+    <updated>2016-02-23T14:54:28+02:00</updated>
+    <id>http://ensr.github.io/blog/2016/02/23/her-android-developerin-bilmesi-gereken-kutuphaneler-02</id>
+    <content type="html"><![CDATA[<p><img class="center" src="/images/libraries.jpg"></p>
+
+<!-- more -->
+
+
+<h3>1. <a href="https://github.com/Raizlabs/DBFlow">DBFlow</a></h3>
+
+<p>Eğer projenizde aşırı komplex data tutmayı planlıyorsanız, DBFlow kullanmanızı tavsiye ederim. Kendi github sayfalarında denilene göre: &ldquo;DBFlow veritabanı kodlarını sizin için yazan hızlı, güçlü ve basit bir ORM android veritabanı kütüphanesidir&rdquo; İşte size küçük bi örnek.</p>
+
+<pre><code class="java">// Query a List
+new Select().from(SomeTable.class).queryList();
+new Select().from(SomeTable.class).where(conditions).queryList();
+
+// Query Single Model
+new Select().from(SomeTable.class).querySingle();
+new Select().from(SomeTable.class).where(conditions).querySingle();
+
+// Query a Table List and Cursor List
+new Select().from(SomeTable.class).where(conditions).queryTableList();
+new Select().from(SomeTable.class).where(conditions).queryCursorList();
+
+// SELECT methods
+new Select().distinct().from(table).queryList();
+new Select().all().from(table).queryList();
+new Select().avg(SomeTable$Table.SALARY).from(SomeTable.class).queryList();
+new Select().method(SomeTable$Table.SALARY, "MAX").from(SomeTable.class).queryList();
 </code></pre>
 
-<p>Bir sonraki adımımız AndroidManifest.xml dosyasına aşağıda verdiğimiz meta-data'yı application tag'inin içerisine eklemek.</p>
+<h3>2. <a href="https://github.com/bumptech/glide">Glide</a></h3>
 
-<pre><code class="xml AndroidManifest.xml">&lt;meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="face"/&gt;
+<p>Glide image yüklenmesinde kullanılan güzel bir kütüphanedir. Alternatif olarak <a href="https://github.com/nostra13/Android-Universal-Image-Loader">Universal Image Loader</a> ve <a href="https://github.com/square/picasso">Picasso</a>&lsquo;yu verebiliriz fakat benim görüşüm en iyi tercih glide olucaktır.</p>
+
+<p>İşte size glide kullanılarak URL'den imageView'a resim yüklenmesinin nasıl yapıldığına dair bir örnek.</p>
+
+<pre><code class="java">ImageView imageView = (ImageView) findViewById(R.id.my_image_view);
+
+Glide.with(this).load("http://goo.gl/gEgYUd").into(imageView);
 </code></pre>
 
-<p>Daha sonra yüz tesbiti yapacağımız resimi /res/raw dizinine koyuyoruz. MainActivity.java'yı (Main activity) açarak aşağıdaki kodu onCreate'in içerisine yazıyoruz.</p>
+<h3>3. <a href="http://jakewharton.github.io/butterknife/">Butterknife</a></h3>
 
-<pre><code class="java MainActivity.java">@Override
-protected void onCreate(Bundle savedInstanceState) {
+<p>ButterKnife android view'larını fields ve methodlara bağlamaya yarayan bir kütüphanedir (Örneğin herhangi bir view'a onClick methodu bağlamak). Basit bir örnek:</p>
+
+<pre><code class="java">class ExampleActivity extends Activity {
+  @Bind(R.id.title) TextView title;
+  @Bind(R.id.subtitle) TextView subtitle;
+  @Bind(R.id.footer) TextView footer;
+
+  @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-
-    // Resimi bitmap formatına döndürüyoruz.
-    InputStream stream = getResources().openRawResource(R.raw.image01);
-    Bitmap bitmap = BitmapFactory.decodeStream(stream);
-
-    // Face Detector'ü burada oluşturuyoruz.
-    FaceDetector detector = new FaceDetector.Builder(getApplicationContext())
-            .setTrackingEnabled(false)
-            .build();
-
-    // Bitmap'imiz üzerinde face detection'un çalışması için bir frame oluşturuyoruz.
-    Frame frame = new Frame.Builder().setBitmap(bitmap).build();
-
-    // Face detector'ü çalıştırarak resimde belirlenen yüzleri SparseArray'e listeliyoruz.
-    SparseArray&lt;Face&gt; faces = detector.detect(frame);
-
-    //Ekrana resimde kaç yüz tespit edildiğini gösteriyoruz.
-    TextView faceCountView = (TextView) findViewById(R.id.face_count);
-    faceCountView.setText(faces.size() + " faces detected");
-
-    //face detection'u sonlandırıyoruz.
-    detector.release();
-
+    setContentView(R.layout.simple_activity);
+    ButterKnife.bind(this);
+    // TODO Use fields...
+  }
 }
 </code></pre>
 
-<p>Evet arkadaşlar, bu şekilde bir resimde yüz olup olmadığını varsa kaç tane olduklarını tespit edebilirsiniz. Şunu da söylemem gerek google'ın bu servisi sadece yüz tespit etmeye yarar, yüz tanıma gibi bir özelliği bulunmamaktadır.</p>
+<p>Şimdilik bu kadar. Umarım faydalı olabilmişimdir. İyi çalışmalar.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Her Android Developer'in Bilmesi Gereken Kütüphaneler 01]]></title>
+    <link href="http://ensr.github.io/blog/2016/02/22/her-android-developerin-bilmesi-gereken-kutuphaneler-01/"/>
+    <updated>2016-02-22T17:21:24+02:00</updated>
+    <id>http://ensr.github.io/blog/2016/02/22/her-android-developerin-bilmesi-gereken-kutuphaneler-01</id>
+    <content type="html"><![CDATA[<p><img class="center" src="/images/top_5.png"></p>
 
-<p>Umarım yardımcı olabilmişimdir. İyi çalışmalar.</p>
+<p>Kütüphaneler yazılım dünyasının olmazsa olmazlarıdır diyebiliriz. Android programlamada da geçerli olan bir durum olduğu için sizlere her android developer'ın bilmesi gereken 3 kütüphaneden şöyle kısace bahsetmek istiyorum. Kütüphanelerin kendi linklerini başlıklarda verdim kütüphaneler hakkında ayrıntılı bilgi edinmek isterseniz başlıklara tıklayabilirsiniz.</p>
+
+<!-- more -->
+
+
+<h3>1. <a href="https://github.com/google/gson">GSON</a></h3>
+
+<p>Gson, java objelerini JSON'dan serialize ve deserialize etmemizi sağlayan bir java kütüphanesidir. Bu kütüphaneyi API'ler ile iletişim kurmakta sık sık kullanırız. API'den gelen json datanın parse edilmesi ve ya API'ye gönderilmek üzere dataların JSON'a çevirilmesinde kullanılır diyebiliriz.</p>
+
+<pre><code class="java">// Serialize 
+String userJSON = new Gson().toJson(user);
+
+// Deserialize
+User user = new Gson().fromJson(userJSON, User.class);
+</code></pre>
+
+<h3>2. <a href="http://square.github.io/retrofit/">RETROFIT</a></h3>
+
+<p>Kendi sitelerinden:&ldquo;Retrfit REST API'ınızı bir java interface'a dönüştürür.&rdquo; Bu bir projedeki API isteklerini organize etmekte kullanılabilecek çok zarif bir yöntem. Request metodu ve relative URL, bir annotation ile eklenir. Buda kodunuzu çok basit ve temiz kılar.</p>
+
+<p>Annotationlar ile kolay bir şekilde request body ekleyebilir, URL ve ya header'ı manipule edebilir ve parametre ekleyebilirsiniz.</p>
+
+<pre><code class="java">public interface RetrofitInterface {
+
+    // asynchronously with a callback
+    @GET("/api/user")
+    User getUser(@Query("user_id") int userId, Callback&lt;User&gt; callback);
+
+    // synchronously
+    @POST("/api/user/register")
+    User registerUser(@Body User user);
+}
+
+
+// example
+RetrofitInterface retrofitInterface = new RestAdapter.Builder()
+            .setEndpoint(API.API_URL).build().create(RetrofitInterface.class);
+
+// fetch user with id 2048
+retrofitInterface.getUser(2048, new Callback&lt;User&gt;() {
+    @Override
+    public void success(User user, Response response) {
+
+    }
+
+    @Override
+    public void failure(RetrofitError retrofitError) {
+
+    }
+});
+</code></pre>
+
+<p>Son olarak retrofit gson kullanmaktadır.</p>
+
+<h3>3. <a href="http://greenrobot.github.io/EventBus/">EVENTBUS</a></h3>
+
+<p>Eventbus uygulamanızın farklı kısımlarının birbiri ile haberleşmasini kolaylaştıran çok kullanışlı bir kütüphanedir. Mesela herhangi bir activity'den halihazırda çalışan bir servise herhangi bişey gönderirken ve ya fragmentlar arasında iletişimi kolaylaştırmada kullanılabilir.</p>
+
+<p>Dataların tutulduğu bir sınıf oluştur.</p>
+
+<pre><code class="java">
+public class PositionEvent {
+    private int positionX, positionY;
+
+    public PositionEvent(int x, int y){
+        this.positionX = x;
+        this.positionY = y;
+    }
+
+    public int getPositionX(){
+        return positionX;
+    }
+
+    public int getPositionY(){
+        return positionY;
+    }
+}
+</code></pre>
+
+<p>Eventin tetikleneceği activityde register ol.</p>
+
+<pre><code class="java">    private EventBus bus = EventBus.getDefault();
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        ...
+        bus.register(this);
+        ...
+    }
+
+    @Subscribe
+    public void onEvent(EyePositionEvent event){
+    //gelen data ile bişeyler yap. Burası event tetiklendiğinde 
+    //çalıştırılacak yer.
+    }
+</code></pre>
+
+<p>Son olarak eventin tetikleneceği yer.</p>
+
+<pre><code>private EventBus bus = EventBus.getDefault();
+...
+PositionEvent event = null;
+...
+//cx ve cy kullanılacak datalar.
+event = new EyePositionEvent(cx, cy);
+bus.post(event);
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Android Face Detection 04 - Classification]]></title>
+    <link href="http://ensr.github.io/blog/2016/02/22/android-face-detection-04-classification/"/>
+    <updated>2016-02-22T14:21:26+02:00</updated>
+    <id>http://ensr.github.io/blog/2016/02/22/android-face-detection-04-classification</id>
+    <content type="html"><![CDATA[<p><img class="center" src="/images/face_classification.jpg">
+Classification, tespit edilen yüz'ün gülüp gülmediğini tespit etmemizi sağlar. Bunu yaparkende yüzün gülüp gülmediğiyle alakalı 0 ile 1 arasında bir sayı döner.<!-- more --> Bu yazımızda face detection ile alakalı önceki yazılarımızda başladığımız proje üzerinden devam ediceğimiz için önce onları okumanızda fayda var:</p>
+
+<ol>
+<li><a href="http://ensr.github.io/blog/2016/02/18/android-face-detection/">Android Face Detection 01 - Başlangıç</a></li>
+<li><a href="http://ensr.github.io/blog/2016/02/18/android-face-detection-02/">Android Face Detection 02 - Yüzleri Kare içine alma</a></li>
+<li><a href="http://ensr.github.io/blog/2016/02/19/android-face-detection-03-landmarks-kullanimi">Android Face Detection 03 - Landmarks Kullanımı</a></li>
+</ol>
+
+
+<p>MainActivit'in <code>onCreate</code> methodunda oluşturduğumuz <code>FaceDetector</code> nesnesini aşşağıdaki gibi güncelliyoruz</p>
+
+<pre><code class="java">FaceDetector detector = new FaceDetector.Builder(getApplicationContext())
+            .setTrackingEnabled(false)
+            .setLandmarkType(FaceDetector.ALL_LANDMARKS)
+            .setClassificationType(FaceDetector.ALL_CLASSIFICATIONS)
+            .build();
+</code></pre>
+
+<p>Eğer landmark kullanmak istemiyorsanız <code>setLandmarkType</code> opsiyonunu kaldırabilirsiniz. Bu procces'in hızlanmasını sağlayacaktır. Yine <code>onCreate</code>&lsquo;in içerisinde kaynak resmimizi alıyoruz</p>
+
+<pre><code class="java">InputStream stream = getResources().openRawResource(R.raw.image03);
+</code></pre>
+
+<p>Daha sonra <code>CustomView</code> sınıfımıza şu fonksiyonu ekliyoruz.</p>
+
+<pre><code class="java">private void detectFaceCharacteristics(Canvas canvas, double scale) {
+    Paint paint = new Paint();
+    paint.setColor(Color.RED);
+    paint.setStyle(Paint.Style.FILL);
+    paint.setStrokeWidth(1);
+    paint.setTextSize(25.0f);
+
+    for (int i = 0; i &lt; mFaces.size(); ++i) {
+        Face face = mFaces.valueAt(i);
+        float cx = (float)(face.getPosition().x * scale);
+        float cy = (float) (face.getPosition().y * scale);
+        canvas.drawText(String.valueOf(face.getIsSmilingProbability()), cx, cy + 10.0f, paint);
+    }
+}
+</code></pre>
+
+<p>Burada kilit nokta <code>face.getIsSmilingProbability()</code>. Bu bize, tespit edilen yüzün gülüyor olma olasılığını 0 ile 1 arasında bir sayı vererek söylemektedir.</p>
+
+<p>Bu yeni fonksiyonumuzu <code>CustomView</code> sımıfımızdaki <code>onDraw()</code> fonksiyonumuzda <code>drawFaceAnnotations()</code> fonksiyonu yerine çağırıyoruz.</p>
+
+<pre><code class="java">detectFaceCharacteristics(canvas, scale);
+</code></pre>
+
+<p>Projeyi run ettiğimizde kaynak olarak verdiğimiz resimdeki yüzlerin gülümseme oranlarını bize verdiğini görebilirsiniz.</p>
+
+<p><img class="center" src="/images/face_class.png"></p>
+
+<p>Tavsiyelerinizi önerilerinizi ve ya sorularınızı bekliyorum. İyi çalışmalar.</p>
 ]]></content>
   </entry>
   

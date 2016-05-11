@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Error | Ensar Hamzaçebi]]></title>
+  <link href="http://ensr.github.io/blog/categories/error/atom.xml" rel="self"/>
+  <link href="http://ensr.github.io/"/>
+  <updated>2016-05-11T17:55:20+03:00</updated>
+  <id>http://ensr.github.io/</id>
+  <author>
+    <name><![CDATA[Ensar Hamzaçebi]]></name>
+    <email><![CDATA[hamzacebi.ensar@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Android Studio Device Null Hatası]]></title>
+    <link href="http://ensr.github.io/blog/2016/03/09/android-studio-device-null-hatasi/"/>
+    <updated>2016-03-09T13:29:30+02:00</updated>
+    <id>http://ensr.github.io/blog/2016/03/09/android-studio-device-null-hatasi</id>
+    <content type="html"><![CDATA[<p>Android Studio ile yazdığınız bir projeyi telefonunuzda ve ya tablediniz de denemek istediğinizde device'ı null olarak görüyorsanız ve Compatible bölümünde <code>No, minSdk(API 14) &gt; deviceSdk(API 1)</code> yazısını görüyorsanız. Bu hatanın sebebi adb doğru izinler ile bağlantı kuramadığındandır. Bunu düzeltmenin çok kolay bir yolu var.</p>
+
+<!-- more -->
+
+
+<ol>
+<li><p>Android Studio'dan terminali açıyoruz ve <code>~/Android/Sdk/platform-tools</code> dizinine gidiyoruz.</p>
+
+<pre><code> $ cd ~/Android/Sdk/platform-tools
+</code></pre></li>
+<li><p>Adb device'ı calıştırıyoruz:</p>
+
+<pre><code> $ ./adb device
+</code></pre></li>
+<li><p>Eğer size <code>&lt;deviceIdentifier&gt; no permissions</code> dönüyorsa adb &lsquo;yi restart ediyoruz.</p>
+
+<pre><code> $ ./adb kill-server
+ $ sudo ./adb devices
+</code></pre></li>
+<li><p>Eğer işe yararsa şu şekilde bir çıktı almanız gerekiyor:</p>
+
+<pre><code> List of devices attached
+ * daemon not running. starting it now on port 5037 *
+ * daemon started successfully *
+ &lt;deviceIdentifier&gt;  device
+</code></pre></li>
+</ol>
+
+
+<p>Artık Sdk versiyon hatası almiyacaksınız. İyi kodlamalar.</p>
+]]></content>
+  </entry>
+  
+</feed>
