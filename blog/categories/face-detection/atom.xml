@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Face Detection | Ensar Hamzaçebi]]></title>
   <link href="http://ensr.github.io/blog/categories/face-detection/atom.xml" rel="self"/>
   <link href="http://ensr.github.io/"/>
-  <updated>2016-05-11T17:37:03+03:00</updated>
+  <updated>2016-05-11T17:41:27+03:00</updated>
   <id>http://ensr.github.io/</id>
   <author>
     <name><![CDATA[Ensar Hamzaçebi]]></name>
@@ -12,6 +12,81 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Android Face Detection 03 - Landmarks Kullanımı]]></title>
+    <link href="http://ensr.github.io/blog/2016/02/19/android-face-detection-03-landmarks-kullanimi/"/>
+    <updated>2016-02-19T16:28:21+02:00</updated>
+    <id>http://ensr.github.io/blog/2016/02/19/android-face-detection-03-landmarks-kullanimi</id>
+    <content type="html"><![CDATA[<p><img class="center" src="/images/face_poster.jpg"></p>
+
+<p>Arkadaşlar bu yazımda landmarklardan bahsetmeye çalışıcam biraz. Evet landmarklar en basit haliyle Face API tarafından tespit edilen yüzler üzerindeki özel noktadara verilen isimdir. Yani sol göz, sağ göz, burun ucu, dudak sonu gibi yüzün belirli yerlerini işaret eden noktalardır.</p>
+
+<!-- more -->
+
+
+<p>Şimdi de landmarkları nasıl kullanıyoruz onu görelim. MainActivity'de <code>onCreate</code> methodumuza bakalım.</p>
+
+<pre><code class="java MainActivity.java">@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+
+    InputStream stream = getResources().openRawResource(R.raw.image03);
+    Bitmap bitmap = BitmapFactory.decodeStream(stream);
+
+    FaceDetector detector = new FaceDetector.Builder(getApplicationContext())
+            .setTrackingEnabled(false)
+            .setLandmarkType(FaceDetector.ALL_LANDMARKS)
+            .build();
+
+    Frame frame = new Frame.Builder().setBitmap(bitmap).build();
+    SparseArray&lt;Face&gt; faces = detector.detect(frame);
+
+    CustomView overlay = (CustomView) findViewById(R.id.customView);
+    overlay.setContent(bitmap, faces);
+
+    detector.release();
+
+}
+</code></pre>
+
+<p>Burada önceki örneklerimizden farklı olarak Face detectorumuzu oluştururken <code>setLandmarkType(FaceDetector.ALL_LANDMARKS)</code> &lsquo;ın eklenmiş olmasıdır.</p>
+
+<p>Bir sonraki adım, daha önceden oluşturduğumuz <code>CustomView</code> sınıfına landmarkları işaretliyecek fonksiyonu eklemek.</p>
+
+<pre><code class="java CustomView.java">private void drawFaceAnnotations(Canvas canvas, double scale) {
+    Paint paint = new Paint();
+    paint.setColor(Color.GREEN);
+    paint.setStyle(Paint.Style.STROKE);
+    paint.setStrokeWidth(5);
+
+    for (int i = 0; i &lt; mFaces.size(); ++i) {
+        Face face = mFaces.valueAt(i);
+        for (Landmark landmark : face.getLandmarks()) {
+            int cx = (int) (landmark.getPosition().x * scale);
+            int cy = (int) (landmark.getPosition().y * scale);
+            canvas.drawCircle(cx, cy, 10, paint);
+        }
+    }
+
+}
+</code></pre>
+
+<p>Sınıfın tamamını merak edenler konu ile alakalı bir önceki <a href="http://ensr.github.io/blog/2016/02/18/android-face-detection-02/">yazıya</a> bakabilirler.</p>
+
+<p>Fonksiyonu ekledikten sonra <code>onDraw()</code> &lsquo;da <code>drawFaceRectangle()</code> yerine yeni eklediğimiz <code>drawFaceAnnotations()</code> fonksiyonunu çağırmayı unutmuyoruz tabiki.</p>
+
+<pre><code>drawFaceAnnotations(canvas, scale);
+</code></pre>
+
+<p>Uygulamamızı bu şekilde çalıştırdığımızda Face Detection'a bitmap olarak verdiğiniz yüz resminde şu şekilde landmarkların işaretlendiğini görebilirsiniz.</p>
+
+<p><img class="center" src="/images/face_landmarks.png"></p>
+
+<p>Şimdilik burada bırakıyorum ancan sonraki yazıda biraz da <code>classification</code> &lsquo;dan bahsedicez. Herhangi bir hata ile karşılaşırsanız yorum yazmayı unutmayın. Kendinize iyi bakın.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Android Face Detection 02 - Yüzleri Kara İçine Alma]]></title>

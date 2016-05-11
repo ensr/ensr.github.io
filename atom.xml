@@ -4,7 +4,7 @@
   <title><![CDATA[Ensar Hamzaçebi]]></title>
   <link href="http://ensr.github.io/atom.xml" rel="self"/>
   <link href="http://ensr.github.io/"/>
-  <updated>2016-05-11T17:37:03+03:00</updated>
+  <updated>2016-05-11T17:41:27+03:00</updated>
   <id>http://ensr.github.io/</id>
   <author>
     <name><![CDATA[Ensar Hamzaçebi]]></name>
@@ -12,6 +12,125 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Android Face Detection 03 - Landmarks Kullanımı]]></title>
+    <link href="http://ensr.github.io/blog/2016/02/19/android-face-detection-03-landmarks-kullanimi/"/>
+    <updated>2016-02-19T16:28:21+02:00</updated>
+    <id>http://ensr.github.io/blog/2016/02/19/android-face-detection-03-landmarks-kullanimi</id>
+    <content type="html"><![CDATA[<p><img class="center" src="http://ensr.github.io/images/face_poster.jpg"></p>
+
+<p>Arkadaşlar bu yazımda landmarklardan bahsetmeye çalışıcam biraz. Evet landmarklar en basit haliyle Face API tarafından tespit edilen yüzler üzerindeki özel noktadara verilen isimdir. Yani sol göz, sağ göz, burun ucu, dudak sonu gibi yüzün belirli yerlerini işaret eden noktalardır.</p>
+
+<!-- more -->
+
+
+<p>Şimdi de landmarkları nasıl kullanıyoruz onu görelim. MainActivity'de <code>onCreate</code> methodumuza bakalım.</p>
+
+<figure class='code'><figcaption><span>MainActivity.java</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">(</span><span class="n">savedInstanceState</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">setContentView</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">activity_main</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">InputStream</span> <span class="n">stream</span> <span class="o">=</span> <span class="n">getResources</span><span class="o">().</span><span class="na">openRawResource</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">raw</span><span class="o">.</span><span class="na">image03</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">Bitmap</span> <span class="n">bitmap</span> <span class="o">=</span> <span class="n">BitmapFactory</span><span class="o">.</span><span class="na">decodeStream</span><span class="o">(</span><span class="n">stream</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">FaceDetector</span> <span class="n">detector</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FaceDetector</span><span class="o">.</span><span class="na">Builder</span><span class="o">(</span><span class="n">getApplicationContext</span><span class="o">())</span>
+</span><span class='line'>            <span class="o">.</span><span class="na">setTrackingEnabled</span><span class="o">(</span><span class="kc">false</span><span class="o">)</span>
+</span><span class='line'>            <span class="o">.</span><span class="na">setLandmarkType</span><span class="o">(</span><span class="n">FaceDetector</span><span class="o">.</span><span class="na">ALL_LANDMARKS</span><span class="o">)</span>
+</span><span class='line'>            <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">Frame</span> <span class="n">frame</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Frame</span><span class="o">.</span><span class="na">Builder</span><span class="o">().</span><span class="na">setBitmap</span><span class="o">(</span><span class="n">bitmap</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">SparseArray</span><span class="o">&lt;</span><span class="n">Face</span><span class="o">&gt;</span> <span class="n">faces</span> <span class="o">=</span> <span class="n">detector</span><span class="o">.</span><span class="na">detect</span><span class="o">(</span><span class="n">frame</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">CustomView</span> <span class="n">overlay</span> <span class="o">=</span> <span class="o">(</span><span class="n">CustomView</span><span class="o">)</span> <span class="n">findViewById</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">customView</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">overlay</span><span class="o">.</span><span class="na">setContent</span><span class="o">(</span><span class="n">bitmap</span><span class="o">,</span> <span class="n">faces</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">detector</span><span class="o">.</span><span class="na">release</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>Burada önceki örneklerimizden farklı olarak Face detectorumuzu oluştururken <code>setLandmarkType(FaceDetector.ALL_LANDMARKS)</code> &lsquo;ın eklenmiş olmasıdır.</p>
+
+<p>Bir sonraki adım, daha önceden oluşturduğumuz <code>CustomView</code> sınıfına landmarkları işaretliyecek fonksiyonu eklemek.</p>
+
+<figure class='code'><figcaption><span>CustomView.java</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">private</span> <span class="kt">void</span> <span class="nf">drawFaceAnnotations</span><span class="o">(</span><span class="n">Canvas</span> <span class="n">canvas</span><span class="o">,</span> <span class="kt">double</span> <span class="n">scale</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">Paint</span> <span class="n">paint</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Paint</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">paint</span><span class="o">.</span><span class="na">setColor</span><span class="o">(</span><span class="n">Color</span><span class="o">.</span><span class="na">GREEN</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">paint</span><span class="o">.</span><span class="na">setStyle</span><span class="o">(</span><span class="n">Paint</span><span class="o">.</span><span class="na">Style</span><span class="o">.</span><span class="na">STROKE</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">paint</span><span class="o">.</span><span class="na">setStrokeWidth</span><span class="o">(</span><span class="mi">5</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">mFaces</span><span class="o">.</span><span class="na">size</span><span class="o">();</span> <span class="o">++</span><span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">Face</span> <span class="n">face</span> <span class="o">=</span> <span class="n">mFaces</span><span class="o">.</span><span class="na">valueAt</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">for</span> <span class="o">(</span><span class="n">Landmark</span> <span class="n">landmark</span> <span class="o">:</span> <span class="n">face</span><span class="o">.</span><span class="na">getLandmarks</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>            <span class="kt">int</span> <span class="n">cx</span> <span class="o">=</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span> <span class="o">(</span><span class="n">landmark</span><span class="o">.</span><span class="na">getPosition</span><span class="o">().</span><span class="na">x</span> <span class="o">*</span> <span class="n">scale</span><span class="o">);</span>
+</span><span class='line'>            <span class="kt">int</span> <span class="n">cy</span> <span class="o">=</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span> <span class="o">(</span><span class="n">landmark</span><span class="o">.</span><span class="na">getPosition</span><span class="o">().</span><span class="na">y</span> <span class="o">*</span> <span class="n">scale</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">canvas</span><span class="o">.</span><span class="na">drawCircle</span><span class="o">(</span><span class="n">cx</span><span class="o">,</span> <span class="n">cy</span><span class="o">,</span> <span class="mi">10</span><span class="o">,</span> <span class="n">paint</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Sınıfın tamamını merak edenler konu ile alakalı bir önceki <a href="http://ensr.github.io/blog/2016/02/18/android-face-detection-02/">yazıya</a> bakabilirler.</p>
+
+<p>Fonksiyonu ekledikten sonra <code>onDraw()</code> &lsquo;da <code>drawFaceRectangle()</code> yerine yeni eklediğimiz <code>drawFaceAnnotations()</code> fonksiyonunu çağırmayı unutmuyoruz tabiki.</p>
+
+<figure class='code'><figcaption><span>CustomView.java</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">drawFaceAnnotations</span><span class="o">(</span><span class="n">canvas</span><span class="o">,</span> <span class="n">scale</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Uygulamamızı bu şekilde çalıştırdığımızda Face Detection'a bitmap olarak verdiğiniz yüz resminde şu şekilde landmarkların işaretlendiğini görebilirsiniz.</p>
+
+<p><img class="center" src="http://ensr.github.io/images/face_landmarks.png"></p>
+
+<p>Şimdilik burada bırakıyorum ancan sonraki yazıda biraz da <code>classification</code> &lsquo;dan bahsedicez. Herhangi bir hata ile karşılaşırsanız yorum yazmayı unutmayın. Kendinize iyi bakın.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Android Face Detection 02 - Yüzleri Kara İçine Alma]]></title>
