@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Face Detection | Ensar Hamzaçebi]]></title>
+  <link href="http://ensr.github.io/blog/categories/face-detection/atom.xml" rel="self"/>
+  <link href="http://ensr.github.io/"/>
+  <updated>2016-05-11T16:50:18+03:00</updated>
+  <id>http://ensr.github.io/</id>
+  <author>
+    <name><![CDATA[Ensar Hamzaçebi]]></name>
+    <email><![CDATA[hamzacebi.ensar@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Android Face Detection 01 - Başlangıç]]></title>
+    <link href="http://ensr.github.io/blog/2016/02/18/android-face-detection-01/"/>
+    <updated>2016-02-18T15:45:52+02:00</updated>
+    <id>http://ensr.github.io/blog/2016/02/18/android-face-detection-01</id>
+    <content type="html"><![CDATA[<p><img class="center" src="/images/face_detect.png"></p>
+
+<p>Android'de face detection işlemini gerçekleştirmek için Google Play Service'i kullanabiliriz.Bunun için yapmamız gereken ilk şey google play service'in gradle dependences'ini projemize eklemek olacaktır.</p>
+
+<p>Android Studio'da oluşturduğumuz projemizin /app dizini altındaki build.gradle dosyasını açarak dependencies kısmına aşşağıdaki satırı ekliyoruz ve Sync ediyoruz.</p>
+
+<!-- more -->
+
+
+<pre><code class="xml build.gradle">compile 'com.google.android.gms:play-services:7.8.0'
+</code></pre>
+
+<p>Bir sonraki adımımız AndroidManifest.xml dosyasına aşağıda verdiğimiz meta-data'yı application tag'inin içerisine eklemek.</p>
+
+<pre><code class="xml AndroidManifest.xml">&lt;meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="face"/&gt;
+</code></pre>
+
+<p>Daha sonra yüz tesbiti yapacağımız resimi /res/raw dizinine koyuyoruz. MainActivity.java'yı (Main activity) açarak aşağıdaki kodu onCreate'in içerisine yazıyoruz.</p>
+
+<pre><code class="java MainActivity.java">@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+
+    // Resimi bitmap formatına döndürüyoruz.
+    InputStream stream = getResources().openRawResource(R.raw.image01);
+    Bitmap bitmap = BitmapFactory.decodeStream(stream);
+
+    // Face Detector'ü burada oluşturuyoruz.
+    FaceDetector detector = new FaceDetector.Builder(getApplicationContext())
+            .setTrackingEnabled(false)
+            .build();
+
+    // Bitmap'imiz üzerinde face detection'un çalışması için bir frame oluşturuyoruz.
+    Frame frame = new Frame.Builder().setBitmap(bitmap).build();
+
+    // Face detector'ü çalıştırarak resimde belirlenen yüzleri SparseArray'e listeliyoruz.
+    SparseArray&lt;Face&gt; faces = detector.detect(frame);
+
+    //Ekrana resimde kaç yüz tespit edildiğini gösteriyoruz.
+    TextView faceCountView = (TextView) findViewById(R.id.face_count);
+    faceCountView.setText(faces.size() + " faces detected");
+
+    //face detection'u sonlandırıyoruz.
+    detector.release();
+
+}
+</code></pre>
+
+<p>Evet arkadaşlar, bu şekilde bir resimde yüz olup olmadığını varsa kaç tane olduklarını tespit edebilirsiniz. Şunu da söylemem gerek google'ın bu servisi sadece yüz tespit etmeye yarar, yüz tanıma gibi bir özelliği bulunmamaktadır.</p>
+
+<p>Umarım yardımcı olabilmişimdir. İyi çalışmalar.</p>
+]]></content>
+  </entry>
+  
+</feed>
