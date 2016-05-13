@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Android | Ensar Hamzaçebi]]></title>
   <link href="http://ensr.github.io/blog/categories/android/atom.xml" rel="self"/>
   <link href="http://ensr.github.io/"/>
-  <updated>2016-05-12T18:39:45+03:00</updated>
+  <updated>2016-05-13T11:19:02+03:00</updated>
   <id>http://ensr.github.io/</id>
   <author>
     <name><![CDATA[Ensar Hamzaçebi]]></name>
@@ -12,6 +12,15 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Android Intro Slider Oluşturma]]></title>
+    <link href="http://ensr.github.io/blog/2016/05/13/android-intro-slider-olusturma/"/>
+    <updated>2016-05-13T11:17:55+03:00</updated>
+    <id>http://ensr.github.io/blog/2016/05/13/android-intro-slider-olusturma</id>
+    <content type="html"><![CDATA[<p>TODO</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Google Speech to Text - Sesi Yazıya Dönüştürme]]></title>
@@ -432,68 +441,6 @@ PositionEvent event = null;
 event = new EyePositionEvent(cx, cy);
 bus.post(event);
 </code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Android Face Detection 04 - Classification]]></title>
-    <link href="http://ensr.github.io/blog/2016/02/22/android-face-detection-04-classification/"/>
-    <updated>2016-02-22T14:21:26+02:00</updated>
-    <id>http://ensr.github.io/blog/2016/02/22/android-face-detection-04-classification</id>
-    <content type="html"><![CDATA[<p><img class="center" src="/images/face_classification.jpg">
-Classification, tespit edilen yüz'ün gülüp gülmediğini tespit etmemizi sağlar. Bunu yaparkende yüzün gülüp gülmediğiyle alakalı 0 ile 1 arasında bir sayı döner.<!-- more --> Bu yazımızda face detection ile alakalı önceki yazılarımızda başladığımız proje üzerinden devam ediceğimiz için önce onları okumanızda fayda var:</p>
-
-<ol>
-<li><a href="http://ensr.github.io/blog/2016/02/18/android-face-detection/">Android Face Detection 01 - Başlangıç</a></li>
-<li><a href="http://ensr.github.io/blog/2016/02/18/android-face-detection-02/">Android Face Detection 02 - Yüzleri Kare içine alma</a></li>
-<li><a href="http://ensr.github.io/blog/2016/02/19/android-face-detection-03-landmarks-kullanimi">Android Face Detection 03 - Landmarks Kullanımı</a></li>
-</ol>
-
-
-<p>MainActivit'in <code>onCreate</code> methodunda oluşturduğumuz <code>FaceDetector</code> nesnesini aşşağıdaki gibi güncelliyoruz</p>
-
-<pre><code class="java">FaceDetector detector = new FaceDetector.Builder(getApplicationContext())
-            .setTrackingEnabled(false)
-            .setLandmarkType(FaceDetector.ALL_LANDMARKS)
-            .setClassificationType(FaceDetector.ALL_CLASSIFICATIONS)
-            .build();
-</code></pre>
-
-<p>Eğer landmark kullanmak istemiyorsanız <code>setLandmarkType</code> opsiyonunu kaldırabilirsiniz. Bu procces'in hızlanmasını sağlayacaktır. Yine <code>onCreate</code>&lsquo;in içerisinde kaynak resmimizi alıyoruz</p>
-
-<pre><code class="java">InputStream stream = getResources().openRawResource(R.raw.image03);
-</code></pre>
-
-<p>Daha sonra <code>CustomView</code> sınıfımıza şu fonksiyonu ekliyoruz.</p>
-
-<pre><code class="java">private void detectFaceCharacteristics(Canvas canvas, double scale) {
-    Paint paint = new Paint();
-    paint.setColor(Color.RED);
-    paint.setStyle(Paint.Style.FILL);
-    paint.setStrokeWidth(1);
-    paint.setTextSize(25.0f);
-
-    for (int i = 0; i &lt; mFaces.size(); ++i) {
-        Face face = mFaces.valueAt(i);
-        float cx = (float)(face.getPosition().x * scale);
-        float cy = (float) (face.getPosition().y * scale);
-        canvas.drawText(String.valueOf(face.getIsSmilingProbability()), cx, cy + 10.0f, paint);
-    }
-}
-</code></pre>
-
-<p>Burada kilit nokta <code>face.getIsSmilingProbability()</code>. Bu bize, tespit edilen yüzün gülüyor olma olasılığını 0 ile 1 arasında bir sayı vererek söylemektedir.</p>
-
-<p>Bu yeni fonksiyonumuzu <code>CustomView</code> sımıfımızdaki <code>onDraw()</code> fonksiyonumuzda <code>drawFaceAnnotations()</code> fonksiyonu yerine çağırıyoruz.</p>
-
-<pre><code class="java">detectFaceCharacteristics(canvas, scale);
-</code></pre>
-
-<p>Projeyi run ettiğimizde kaynak olarak verdiğimiz resimdeki yüzlerin gülümseme oranlarını bize verdiğini görebilirsiniz.</p>
-
-<p><img class="center" src="/images/face_class.png"></p>
-
-<p>Tavsiyelerinizi önerilerinizi ve ya sorularınızı bekliyorum. İyi çalışmalar.</p>
 ]]></content>
   </entry>
   
