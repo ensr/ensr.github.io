@@ -4,7 +4,7 @@
   <title><![CDATA[Ensar Hamzaçebi]]></title>
   <link href="http://ensr.github.io/atom.xml" rel="self"/>
   <link href="http://ensr.github.io/"/>
-  <updated>2016-05-13T11:35:09+03:00</updated>
+  <updated>2016-05-16T13:57:58+03:00</updated>
   <id>http://ensr.github.io/</id>
   <author>
     <name><![CDATA[Ensar Hamzaçebi]]></name>
@@ -19,6 +19,1207 @@
     <updated>2016-05-13T11:17:55+03:00</updated>
     <id>http://ensr.github.io/blog/2016/05/13/android-intro-slider-olusturma</id>
     <content type="html"><![CDATA[<p><img class="center" src="http://ensr.github.io/images/android_intro_slider.png"></p>
+
+<p>Merhaba arkadaşlar, bugün sizlere android intro slider oluşturmayı anlatıcam. Bildiğiniz gibi birçok geliştirici yeni kullanıcılarına uyulamanın çalışma prensibini hızlıca anlatabilmek için intro sliderlardan faydalanmaktadır. Hadi başlayalım.</p>
+
+<!--more-->
+
+
+<p>İlk olarak projemizi oluşturuyoruz ve <a href="http://api.androidhive.info/welcome_slider/res.zip">buradan</a> ihtiyacınız olacak olan res dosyasını indirip projenize ekliyorsunuz.</p>
+
+<p>Daha sonra res/values altındaki <code>color.xml</code> dosyasını açıyoruz ve aşşağıdaki gibi güncelliyoruz.</p>
+
+<figure class='code'><figcaption><span>color.xml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+</span><span class='line'><span class="nt">&lt;resources&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">&quot;colorPrimary&quot;</span><span class="nt">&gt;</span>#3F51B5<span class="nt">&lt;/color&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">&quot;colorPrimaryDark&quot;</span><span class="nt">&gt;</span>#303F9F<span class="nt">&lt;/color&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">&quot;colorAccent&quot;</span><span class="nt">&gt;</span>#FF4081<span class="nt">&lt;/color&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c">&lt;!-- Screens background color--&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">&quot;bg_screen1&quot;</span><span class="nt">&gt;</span>#f64c73<span class="nt">&lt;/color&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">&quot;bg_screen2&quot;</span><span class="nt">&gt;</span>#20d2bb<span class="nt">&lt;/color&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">&quot;bg_screen3&quot;</span><span class="nt">&gt;</span>#3395ff<span class="nt">&lt;/color&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">&quot;bg_screen4&quot;</span><span class="nt">&gt;</span>#c873f4<span class="nt">&lt;/color&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c">&lt;!-- dots inactive colors --&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">&quot;dot_dark_screen1&quot;</span><span class="nt">&gt;</span>#d1395c<span class="nt">&lt;/color&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">&quot;dot_dark_screen2&quot;</span><span class="nt">&gt;</span>#14a895<span class="nt">&lt;/color&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">&quot;dot_dark_screen3&quot;</span><span class="nt">&gt;</span>#2278d4<span class="nt">&lt;/color&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">&quot;dot_dark_screen4&quot;</span><span class="nt">&gt;</span>#a854d4<span class="nt">&lt;/color&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c">&lt;!-- dots active colors --&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">&quot;dot_light_screen1&quot;</span><span class="nt">&gt;</span>#f98da5<span class="nt">&lt;/color&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">&quot;dot_light_screen2&quot;</span><span class="nt">&gt;</span>#8cf9eb<span class="nt">&lt;/color&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">&quot;dot_light_screen3&quot;</span><span class="nt">&gt;</span>#93c6fd<span class="nt">&lt;/color&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">&quot;dot_light_screen4&quot;</span><span class="nt">&gt;</span>#e4b5fc<span class="nt">&lt;/color&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;array</span> <span class="na">name=</span><span class="s">&quot;array_dot_active&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;item&gt;</span>@color/dot_light_screen1<span class="nt">&lt;/item&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;item&gt;</span>@color/dot_light_screen2<span class="nt">&lt;/item&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;item&gt;</span>@color/dot_light_screen3<span class="nt">&lt;/item&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;item&gt;</span>@color/dot_light_screen4<span class="nt">&lt;/item&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/array&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;array</span> <span class="na">name=</span><span class="s">&quot;array_dot_inactive&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;item&gt;</span>@color/dot_dark_screen1<span class="nt">&lt;/item&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;item&gt;</span>@color/dot_dark_screen2<span class="nt">&lt;/item&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;item&gt;</span>@color/dot_dark_screen3<span class="nt">&lt;/item&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;item&gt;</span>@color/dot_dark_screen4<span class="nt">&lt;/item&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/array&gt;</span>
+</span><span class='line'><span class="nt">&lt;/resources&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>res/values altında <code>strings.xml</code> &lsquo;i açıp güncelliyoruz.</p>
+
+<figure class='code'><figcaption><span>strings.xml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;resources&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;string</span> <span class="na">name=</span><span class="s">&quot;app_name&quot;</span><span class="nt">&gt;</span>Intro Slider<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;string</span> <span class="na">name=</span><span class="s">&quot;title_activity_welcome&quot;</span><span class="nt">&gt;</span>Home Screen<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;string</span> <span class="na">name=</span><span class="s">&quot;next&quot;</span><span class="nt">&gt;</span>NEXT<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;string</span> <span class="na">name=</span><span class="s">&quot;skip&quot;</span><span class="nt">&gt;</span>SKIP<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;string</span> <span class="na">name=</span><span class="s">&quot;start&quot;</span><span class="nt">&gt;</span>GOT IT<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;string</span> <span class="na">name=</span><span class="s">&quot;slide_1_title&quot;</span><span class="nt">&gt;</span>Hello Food!<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;string</span> <span class="na">name=</span><span class="s">&quot;slide_1_desc&quot;</span><span class="nt">&gt;</span>The easiest way to order food from your favourite restaurant!<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;string</span> <span class="na">name=</span><span class="s">&quot;slide_2_title&quot;</span><span class="nt">&gt;</span>Movie Tickets<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;string</span> <span class="na">name=</span><span class="s">&quot;slide_2_desc&quot;</span><span class="nt">&gt;</span>Book movie tickets for your family and friends!<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;string</span> <span class="na">name=</span><span class="s">&quot;slide_3_title&quot;</span><span class="nt">&gt;</span>Great Discounts<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;string</span> <span class="na">name=</span><span class="s">&quot;slide_3_desc&quot;</span><span class="nt">&gt;</span>Best discounts on every single service we offer!<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;string</span> <span class="na">name=</span><span class="s">&quot;slide_4_title&quot;</span><span class="nt">&gt;</span>World Travel<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;string</span> <span class="na">name=</span><span class="s">&quot;slide_4_desc&quot;</span><span class="nt">&gt;</span>Book tickets of any transportation and travel the world!<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;string</span> <span class="na">name=</span><span class="s">&quot;play_again_desc&quot;</span><span class="nt">&gt;</span>To see the welcome slider again, goto Settings -&gt; apps -&gt; welcome slider -&gt; clear data<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;string</span> <span class="na">name=</span><span class="s">&quot;play_again&quot;</span><span class="nt">&gt;</span>Play Again<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'><span class="nt">&lt;/resources&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>res/values altında <code>dimens.xml</code> &lsquo;i açıp güncelliyoruz.</p>
+
+<figure class='code'><figcaption><span>dimens.xml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;resources&gt;</span>
+</span><span class='line'>    <span class="c">&lt;!-- Default screen margins, per the Android Design guidelines. --&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;dimen</span> <span class="na">name=</span><span class="s">&quot;activity_horizontal_margin&quot;</span><span class="nt">&gt;</span>16dp<span class="nt">&lt;/dimen&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;dimen</span> <span class="na">name=</span><span class="s">&quot;activity_vertical_margin&quot;</span><span class="nt">&gt;</span>16dp<span class="nt">&lt;/dimen&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;dimen</span> <span class="na">name=</span><span class="s">&quot;fab_margin&quot;</span><span class="nt">&gt;</span>16dp<span class="nt">&lt;/dimen&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;dimen</span> <span class="na">name=</span><span class="s">&quot;dots_height&quot;</span><span class="nt">&gt;</span>30dp<span class="nt">&lt;/dimen&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;dimen</span> <span class="na">name=</span><span class="s">&quot;dots_margin_bottom&quot;</span><span class="nt">&gt;</span>20dp<span class="nt">&lt;/dimen&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;dimen</span> <span class="na">name=</span><span class="s">&quot;img_width_height&quot;</span><span class="nt">&gt;</span>120dp<span class="nt">&lt;/dimen&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;dimen</span> <span class="na">name=</span><span class="s">&quot;slide_title&quot;</span><span class="nt">&gt;</span>30dp<span class="nt">&lt;/dimen&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;dimen</span> <span class="na">name=</span><span class="s">&quot;slide_desc&quot;</span><span class="nt">&gt;</span>16dp<span class="nt">&lt;/dimen&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;dimen</span> <span class="na">name=</span><span class="s">&quot;desc_padding&quot;</span><span class="nt">&gt;</span>40dp<span class="nt">&lt;/dimen&gt;</span>
+</span><span class='line'><span class="nt">&lt;/resources&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>style.xml &lsquo;i açıp güncelliyoruz.</p>
+
+<figure class='code'><figcaption><span>style.xml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;resources&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c">&lt;!-- Base application theme. --&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;style</span> <span class="na">name=</span><span class="s">&quot;AppTheme&quot;</span> <span class="na">parent=</span><span class="s">&quot;Theme.AppCompat.Light.DarkActionBar&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="c">&lt;!-- Customize your theme here. --&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;item</span> <span class="na">name=</span><span class="s">&quot;colorPrimary&quot;</span><span class="nt">&gt;</span>@color/colorPrimary<span class="nt">&lt;/item&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;item</span> <span class="na">name=</span><span class="s">&quot;colorPrimaryDark&quot;</span><span class="nt">&gt;</span>@color/colorPrimaryDark<span class="nt">&lt;/item&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;item</span> <span class="na">name=</span><span class="s">&quot;colorAccent&quot;</span><span class="nt">&gt;</span>@color/colorAccent<span class="nt">&lt;/item&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;item</span> <span class="na">name=</span><span class="s">&quot;windowActionBar&quot;</span><span class="nt">&gt;</span>false<span class="nt">&lt;/item&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;item</span> <span class="na">name=</span><span class="s">&quot;windowNoTitle&quot;</span><span class="nt">&gt;</span>true<span class="nt">&lt;/item&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/style&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;style</span> <span class="na">name=</span><span class="s">&quot;AppTheme.AppBarOverlay&quot;</span> <span class="na">parent=</span><span class="s">&quot;ThemeOverlay.AppCompat.Dark.ActionBar&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;style</span> <span class="na">name=</span><span class="s">&quot;AppTheme.PopupOverlay&quot;</span> <span class="na">parent=</span><span class="s">&quot;ThemeOverlay.AppCompat.Light&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/resources&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Intro slider kullanıcı uygulamayı ilk defa çalıştırdığında görünmelidir. Uygulama ikinci kez çalıştırıldığında direkt uygulama açılmalıdır. Bunun için <code>SharedPreferences</code> kullanılarak bir boolean değer tutacağız.</p>
+
+<p>PrefManager.java adında bir class oluşturuyoruz ve içerisine <code>setFirstTimeLaunch()</code> ve <code>isFirstTimeLaunch()</code> fonksiyonlarını yazıyoruz.</p>
+
+<figure class='code'><figcaption><span>PrefManager.java</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">package</span> <span class="n">io</span><span class="o">.</span><span class="na">github</span><span class="o">.</span><span class="na">ensr</span><span class="o">.</span><span class="na">introslider</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">android.content.Context</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">android.content.SharedPreferences</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm"> * Created by ensr on 05/05/16.</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">PrefManager</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">SharedPreferences</span> <span class="n">pref</span><span class="o">;</span>
+</span><span class='line'>    <span class="n">SharedPreferences</span><span class="o">.</span><span class="na">Editor</span> <span class="n">editor</span><span class="o">;</span>
+</span><span class='line'>    <span class="n">Context</span> <span class="n">_context</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// shared pref mode</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">PRIVATE_MODE</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Shared preferences file name</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">PREF_NAME</span> <span class="o">=</span> <span class="s">&quot;welcome&quot;</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">IS_FIRST_TIME_LAUNCH</span> <span class="o">=</span> <span class="s">&quot;IsFirstTimeLaunch&quot;</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="nf">PrefManager</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">_context</span> <span class="o">=</span> <span class="n">context</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">pref</span> <span class="o">=</span> <span class="n">_context</span><span class="o">.</span><span class="na">getSharedPreferences</span><span class="o">(</span><span class="n">PREF_NAME</span><span class="o">,</span> <span class="n">PRIVATE_MODE</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">editor</span> <span class="o">=</span> <span class="n">pref</span><span class="o">.</span><span class="na">edit</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setFirstTimeLaunch</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">isFirstTime</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">editor</span><span class="o">.</span><span class="na">putBoolean</span><span class="o">(</span><span class="n">IS_FIRST_TIME_LAUNCH</span><span class="o">,</span> <span class="n">isFirstTime</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">editor</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isFirstTimeLaunch</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">pref</span><span class="o">.</span><span class="na">getBoolean</span><span class="o">(</span><span class="n">IS_FIRST_TIME_LAUNCH</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Şimdi intro slider'ın sayfalarını oluşturalım. Ben 4 sayfadan oluşan bir slider oluşturucam. <code>res/values</code> altına <code>welcome_side1.xml</code> , <code>welcome_side2.xml</code> , <code>welcome_side3.xml</code> , <code>welcome_side4.xml</code> xml dosyalarını aşşağıdaki gibi oluşturuyoruz.</p>
+
+<figure class='code'><figcaption><span>welcomw_slide1.xml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+</span><span class='line'><span class="nt">&lt;RelativeLayout</span> <span class="na">xmlns:android=</span><span class="s">&quot;http://schemas.android.com/apk/res/android&quot;</span>
+</span><span class='line'>    <span class="na">android:layout_width=</span><span class="s">&quot;match_parent&quot;</span>
+</span><span class='line'>    <span class="na">android:layout_height=</span><span class="s">&quot;match_parent&quot;</span>
+</span><span class='line'>    <span class="na">android:background=</span><span class="s">&quot;@color/bg_screen1&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;LinearLayout</span>
+</span><span class='line'>        <span class="na">android:layout_width=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>        <span class="na">android:layout_height=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>        <span class="na">android:layout_centerInParent=</span><span class="s">&quot;true&quot;</span>
+</span><span class='line'>        <span class="na">android:gravity=</span><span class="s">&quot;center_horizontal&quot;</span>
+</span><span class='line'>        <span class="na">android:orientation=</span><span class="s">&quot;vertical&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nt">&lt;ImageView</span>
+</span><span class='line'>            <span class="na">android:layout_width=</span><span class="s">&quot;@dimen/img_width_height&quot;</span>
+</span><span class='line'>            <span class="na">android:layout_height=</span><span class="s">&quot;@dimen/img_width_height&quot;</span>
+</span><span class='line'>            <span class="na">android:src=</span><span class="s">&quot;@drawable/ic_food&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nt">&lt;TextView</span>
+</span><span class='line'>            <span class="na">android:layout_width=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>            <span class="na">android:layout_height=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>            <span class="na">android:text=</span><span class="s">&quot;@string/slide_1_title&quot;</span>
+</span><span class='line'>            <span class="na">android:textColor=</span><span class="s">&quot;@android:color/white&quot;</span>
+</span><span class='line'>            <span class="na">android:textSize=</span><span class="s">&quot;@dimen/slide_title&quot;</span>
+</span><span class='line'>            <span class="na">android:textStyle=</span><span class="s">&quot;bold&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nt">&lt;TextView</span>
+</span><span class='line'>            <span class="na">android:layout_width=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>            <span class="na">android:layout_height=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>            <span class="na">android:layout_marginTop=</span><span class="s">&quot;20dp&quot;</span>
+</span><span class='line'>            <span class="na">android:paddingLeft=</span><span class="s">&quot;@dimen/desc_padding&quot;</span>
+</span><span class='line'>            <span class="na">android:paddingRight=</span><span class="s">&quot;@dimen/desc_padding&quot;</span>
+</span><span class='line'>            <span class="na">android:text=</span><span class="s">&quot;@string/slide_1_desc&quot;</span>
+</span><span class='line'>            <span class="na">android:textAlignment=</span><span class="s">&quot;center&quot;</span>
+</span><span class='line'>            <span class="na">android:textColor=</span><span class="s">&quot;@android:color/white&quot;</span>
+</span><span class='line'>            <span class="na">android:textSize=</span><span class="s">&quot;@dimen/slide_desc&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;/LinearLayout&gt;</span>
+</span><span class='line'><span class="nt">&lt;/RelativeLayout&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>welcome_slider2.xml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+</span><span class='line'><span class="nt">&lt;RelativeLayout</span> <span class="na">xmlns:android=</span><span class="s">&quot;http://schemas.android.com/apk/res/android&quot;</span>
+</span><span class='line'>    <span class="na">android:layout_width=</span><span class="s">&quot;match_parent&quot;</span>
+</span><span class='line'>    <span class="na">android:layout_height=</span><span class="s">&quot;match_parent&quot;</span>
+</span><span class='line'>    <span class="na">android:background=</span><span class="s">&quot;@color/bg_screen2&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;LinearLayout</span>
+</span><span class='line'>        <span class="na">android:layout_width=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>        <span class="na">android:layout_height=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>        <span class="na">android:layout_centerInParent=</span><span class="s">&quot;true&quot;</span>
+</span><span class='line'>        <span class="na">android:gravity=</span><span class="s">&quot;center_horizontal&quot;</span>
+</span><span class='line'>        <span class="na">android:orientation=</span><span class="s">&quot;vertical&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nt">&lt;ImageView</span>
+</span><span class='line'>            <span class="na">android:layout_width=</span><span class="s">&quot;@dimen/img_width_height&quot;</span>
+</span><span class='line'>            <span class="na">android:layout_height=</span><span class="s">&quot;@dimen/img_width_height&quot;</span>
+</span><span class='line'>            <span class="na">android:src=</span><span class="s">&quot;@drawable/ic_movie&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nt">&lt;TextView</span>
+</span><span class='line'>            <span class="na">android:layout_width=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>            <span class="na">android:layout_height=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>            <span class="na">android:text=</span><span class="s">&quot;@string/slide_2_title&quot;</span>
+</span><span class='line'>            <span class="na">android:textColor=</span><span class="s">&quot;@android:color/white&quot;</span>
+</span><span class='line'>            <span class="na">android:textSize=</span><span class="s">&quot;@dimen/slide_title&quot;</span>
+</span><span class='line'>            <span class="na">android:textStyle=</span><span class="s">&quot;bold&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nt">&lt;TextView</span>
+</span><span class='line'>            <span class="na">android:layout_width=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>            <span class="na">android:layout_height=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>            <span class="na">android:layout_marginTop=</span><span class="s">&quot;20dp&quot;</span>
+</span><span class='line'>            <span class="na">android:paddingLeft=</span><span class="s">&quot;@dimen/desc_padding&quot;</span>
+</span><span class='line'>            <span class="na">android:paddingRight=</span><span class="s">&quot;@dimen/desc_padding&quot;</span>
+</span><span class='line'>            <span class="na">android:text=</span><span class="s">&quot;@string/slide_2_desc&quot;</span>
+</span><span class='line'>            <span class="na">android:textAlignment=</span><span class="s">&quot;center&quot;</span>
+</span><span class='line'>            <span class="na">android:textColor=</span><span class="s">&quot;@android:color/white&quot;</span>
+</span><span class='line'>            <span class="na">android:textSize=</span><span class="s">&quot;@dimen/slide_desc&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;/LinearLayout&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/RelativeLayout&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>welcome_slide3.xml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+</span><span class='line'><span class="nt">&lt;RelativeLayout</span> <span class="na">xmlns:android=</span><span class="s">&quot;http://schemas.android.com/apk/res/android&quot;</span>
+</span><span class='line'>    <span class="na">android:layout_width=</span><span class="s">&quot;match_parent&quot;</span>
+</span><span class='line'>    <span class="na">android:layout_height=</span><span class="s">&quot;match_parent&quot;</span>
+</span><span class='line'>    <span class="na">android:background=</span><span class="s">&quot;@color/bg_screen3&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;LinearLayout</span>
+</span><span class='line'>        <span class="na">android:layout_width=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>        <span class="na">android:layout_height=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>        <span class="na">android:layout_centerInParent=</span><span class="s">&quot;true&quot;</span>
+</span><span class='line'>        <span class="na">android:gravity=</span><span class="s">&quot;center_horizontal&quot;</span>
+</span><span class='line'>        <span class="na">android:orientation=</span><span class="s">&quot;vertical&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nt">&lt;ImageView</span>
+</span><span class='line'>            <span class="na">android:layout_width=</span><span class="s">&quot;@dimen/img_width_height&quot;</span>
+</span><span class='line'>            <span class="na">android:layout_height=</span><span class="s">&quot;@dimen/img_width_height&quot;</span>
+</span><span class='line'>            <span class="na">android:src=</span><span class="s">&quot;@drawable/ic_discount&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nt">&lt;TextView</span>
+</span><span class='line'>            <span class="na">android:layout_width=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>            <span class="na">android:layout_height=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>            <span class="na">android:text=</span><span class="s">&quot;@string/slide_3_title&quot;</span>
+</span><span class='line'>            <span class="na">android:textColor=</span><span class="s">&quot;@android:color/white&quot;</span>
+</span><span class='line'>            <span class="na">android:textSize=</span><span class="s">&quot;@dimen/slide_title&quot;</span>
+</span><span class='line'>            <span class="na">android:textStyle=</span><span class="s">&quot;bold&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nt">&lt;TextView</span>
+</span><span class='line'>            <span class="na">android:layout_width=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>            <span class="na">android:layout_height=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>            <span class="na">android:layout_marginTop=</span><span class="s">&quot;20dp&quot;</span>
+</span><span class='line'>            <span class="na">android:paddingLeft=</span><span class="s">&quot;@dimen/desc_padding&quot;</span>
+</span><span class='line'>            <span class="na">android:paddingRight=</span><span class="s">&quot;@dimen/desc_padding&quot;</span>
+</span><span class='line'>            <span class="na">android:text=</span><span class="s">&quot;@string/slide_3_desc&quot;</span>
+</span><span class='line'>            <span class="na">android:textAlignment=</span><span class="s">&quot;center&quot;</span>
+</span><span class='line'>            <span class="na">android:textColor=</span><span class="s">&quot;@android:color/white&quot;</span>
+</span><span class='line'>            <span class="na">android:textSize=</span><span class="s">&quot;@dimen/slide_desc&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;/LinearLayout&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/RelativeLayout&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>welcome_slide4.xml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+</span><span class='line'><span class="nt">&lt;RelativeLayout</span> <span class="na">xmlns:android=</span><span class="s">&quot;http://schemas.android.com/apk/res/android&quot;</span>
+</span><span class='line'>    <span class="na">android:layout_width=</span><span class="s">&quot;match_parent&quot;</span>
+</span><span class='line'>    <span class="na">android:layout_height=</span><span class="s">&quot;match_parent&quot;</span>
+</span><span class='line'>    <span class="na">android:background=</span><span class="s">&quot;@color/bg_screen4&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;LinearLayout</span>
+</span><span class='line'>        <span class="na">android:layout_width=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>        <span class="na">android:layout_height=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>        <span class="na">android:layout_centerInParent=</span><span class="s">&quot;true&quot;</span>
+</span><span class='line'>        <span class="na">android:gravity=</span><span class="s">&quot;center_horizontal&quot;</span>
+</span><span class='line'>        <span class="na">android:orientation=</span><span class="s">&quot;vertical&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nt">&lt;ImageView</span>
+</span><span class='line'>            <span class="na">android:layout_width=</span><span class="s">&quot;@dimen/img_width_height&quot;</span>
+</span><span class='line'>            <span class="na">android:layout_height=</span><span class="s">&quot;@dimen/img_width_height&quot;</span>
+</span><span class='line'>            <span class="na">android:src=</span><span class="s">&quot;@drawable/ic_travel&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nt">&lt;TextView</span>
+</span><span class='line'>            <span class="na">android:layout_width=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>            <span class="na">android:layout_height=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>            <span class="na">android:text=</span><span class="s">&quot;@string/slide_4_title&quot;</span>
+</span><span class='line'>            <span class="na">android:textColor=</span><span class="s">&quot;@android:color/white&quot;</span>
+</span><span class='line'>            <span class="na">android:textSize=</span><span class="s">&quot;@dimen/slide_title&quot;</span>
+</span><span class='line'>            <span class="na">android:textStyle=</span><span class="s">&quot;bold&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nt">&lt;TextView</span>
+</span><span class='line'>            <span class="na">android:layout_width=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>            <span class="na">android:layout_height=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>            <span class="na">android:layout_marginTop=</span><span class="s">&quot;20dp&quot;</span>
+</span><span class='line'>            <span class="na">android:paddingLeft=</span><span class="s">&quot;@dimen/desc_padding&quot;</span>
+</span><span class='line'>            <span class="na">android:paddingRight=</span><span class="s">&quot;@dimen/desc_padding&quot;</span>
+</span><span class='line'>            <span class="na">android:text=</span><span class="s">&quot;@string/slide_4_desc&quot;</span>
+</span><span class='line'>            <span class="na">android:textAlignment=</span><span class="s">&quot;center&quot;</span>
+</span><span class='line'>            <span class="na">android:textColor=</span><span class="s">&quot;@android:color/white&quot;</span>
+</span><span class='line'>            <span class="na">android:textSize=</span><span class="s">&quot;@dimen/slide_desc&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;/LinearLayout&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/RelativeLayout&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Sayfaların gösterileceği <code>WelcomeActivity.java</code> &lsquo;yı oluşturuyoruz ve <code>activity_welcome.xml</code> sayfasını aşşağıdaki gibi düzenliyoruz.</p>
+
+<figure class='code'><figcaption><span>activity_welcome.xml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+</span><span class='line'><span class="nt">&lt;RelativeLayout</span> <span class="na">xmlns:android=</span><span class="s">&quot;http://schemas.android.com/apk/res/android&quot;</span>
+</span><span class='line'>    <span class="na">xmlns:app=</span><span class="s">&quot;http://schemas.android.com/apk/res-auto&quot;</span>
+</span><span class='line'>    <span class="na">xmlns:tools=</span><span class="s">&quot;http://schemas.android.com/tools&quot;</span>
+</span><span class='line'>    <span class="na">android:layout_width=</span><span class="s">&quot;match_parent&quot;</span>
+</span><span class='line'>    <span class="na">android:layout_height=</span><span class="s">&quot;match_parent&quot;</span>
+</span><span class='line'>    <span class="na">tools:showIn=</span><span class="s">&quot;@layout/activity_welcome&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;android.support.v4.view.ViewPager</span>
+</span><span class='line'>        <span class="na">android:id=</span><span class="s">&quot;@+id/view_pager&quot;</span>
+</span><span class='line'>        <span class="na">android:layout_width=</span><span class="s">&quot;match_parent&quot;</span>
+</span><span class='line'>        <span class="na">android:layout_height=</span><span class="s">&quot;match_parent&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;LinearLayout</span>
+</span><span class='line'>        <span class="na">android:id=</span><span class="s">&quot;@+id/layoutDots&quot;</span>
+</span><span class='line'>        <span class="na">android:layout_width=</span><span class="s">&quot;match_parent&quot;</span>
+</span><span class='line'>        <span class="na">android:layout_height=</span><span class="s">&quot;@dimen/dots_height&quot;</span>
+</span><span class='line'>        <span class="na">android:layout_alignParentBottom=</span><span class="s">&quot;true&quot;</span>
+</span><span class='line'>        <span class="na">android:layout_marginBottom=</span><span class="s">&quot;@dimen/dots_margin_bottom&quot;</span>
+</span><span class='line'>        <span class="na">android:gravity=</span><span class="s">&quot;center&quot;</span>
+</span><span class='line'>        <span class="na">android:orientation=</span><span class="s">&quot;horizontal&quot;</span><span class="nt">&gt;&lt;/LinearLayout&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;View</span>
+</span><span class='line'>        <span class="na">android:layout_width=</span><span class="s">&quot;match_parent&quot;</span>
+</span><span class='line'>        <span class="na">android:layout_height=</span><span class="s">&quot;1dp&quot;</span>
+</span><span class='line'>        <span class="na">android:alpha=</span><span class="s">&quot;.5&quot;</span>
+</span><span class='line'>        <span class="na">android:layout_above=</span><span class="s">&quot;@id/layoutDots&quot;</span>
+</span><span class='line'>        <span class="na">android:background=</span><span class="s">&quot;@android:color/white&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;Button</span>
+</span><span class='line'>        <span class="na">android:id=</span><span class="s">&quot;@+id/btn_next&quot;</span>
+</span><span class='line'>        <span class="na">android:layout_width=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>        <span class="na">android:layout_height=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>        <span class="na">android:layout_alignParentBottom=</span><span class="s">&quot;true&quot;</span>
+</span><span class='line'>        <span class="na">android:layout_alignParentRight=</span><span class="s">&quot;true&quot;</span>
+</span><span class='line'>        <span class="na">android:background=</span><span class="s">&quot;@null&quot;</span>
+</span><span class='line'>        <span class="na">android:text=</span><span class="s">&quot;@string/next&quot;</span>
+</span><span class='line'>        <span class="na">android:textColor=</span><span class="s">&quot;@android:color/white&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;Button</span>
+</span><span class='line'>        <span class="na">android:id=</span><span class="s">&quot;@+id/btn_skip&quot;</span>
+</span><span class='line'>        <span class="na">android:layout_width=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>        <span class="na">android:layout_height=</span><span class="s">&quot;wrap_content&quot;</span>
+</span><span class='line'>        <span class="na">android:layout_alignParentBottom=</span><span class="s">&quot;true&quot;</span>
+</span><span class='line'>        <span class="na">android:layout_alignParentLeft=</span><span class="s">&quot;true&quot;</span>
+</span><span class='line'>        <span class="na">android:background=</span><span class="s">&quot;@null&quot;</span>
+</span><span class='line'>        <span class="na">android:text=</span><span class="s">&quot;@string/skip&quot;</span>
+</span><span class='line'>        <span class="na">android:textColor=</span><span class="s">&quot;@android:color/white&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/RelativeLayout&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Burada slider sayfalarının içerisine konulacağı <code>ViewPager</code> &lsquo;ı ve butonları oluşturduk. Şimdi sıra önceden oluşturduğumuz activity'nin içerisini doldurmaya. İlk olarak <code>prefManager.isFirstTimeLaunch()</code> fonksiyonunu kullanarak uygulamaya ilk defa girilip girilmediğine bakıyoruz. Eğer ilk giriş değilse intro slider skip edilecektir. ViewPager için de bir PagerAdaptor oluşturuyoruz. Skip ve Next butonları için de click event i oluşturuyoruz:</p>
+
+<figure class='code'><figcaption><span>WelcomeActivity.java</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+<span class='line-number'>152</span>
+<span class='line-number'>153</span>
+<span class='line-number'>154</span>
+<span class='line-number'>155</span>
+<span class='line-number'>156</span>
+<span class='line-number'>157</span>
+<span class='line-number'>158</span>
+<span class='line-number'>159</span>
+<span class='line-number'>160</span>
+<span class='line-number'>161</span>
+<span class='line-number'>162</span>
+<span class='line-number'>163</span>
+<span class='line-number'>164</span>
+<span class='line-number'>165</span>
+<span class='line-number'>166</span>
+<span class='line-number'>167</span>
+<span class='line-number'>168</span>
+<span class='line-number'>169</span>
+<span class='line-number'>170</span>
+<span class='line-number'>171</span>
+<span class='line-number'>172</span>
+<span class='line-number'>173</span>
+<span class='line-number'>174</span>
+<span class='line-number'>175</span>
+<span class='line-number'>176</span>
+<span class='line-number'>177</span>
+<span class='line-number'>178</span>
+<span class='line-number'>179</span>
+<span class='line-number'>180</span>
+<span class='line-number'>181</span>
+<span class='line-number'>182</span>
+<span class='line-number'>183</span>
+<span class='line-number'>184</span>
+<span class='line-number'>185</span>
+<span class='line-number'>186</span>
+<span class='line-number'>187</span>
+<span class='line-number'>188</span>
+<span class='line-number'>189</span>
+<span class='line-number'>190</span>
+<span class='line-number'>191</span>
+<span class='line-number'>192</span>
+<span class='line-number'>193</span>
+<span class='line-number'>194</span>
+<span class='line-number'>195</span>
+<span class='line-number'>196</span>
+<span class='line-number'>197</span>
+<span class='line-number'>198</span>
+<span class='line-number'>199</span>
+<span class='line-number'>200</span>
+<span class='line-number'>201</span>
+<span class='line-number'>202</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">package</span> <span class="n">io</span><span class="o">.</span><span class="na">github</span><span class="o">.</span><span class="na">ensr</span><span class="o">.</span><span class="na">introslider</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">android.content.Context</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">android.content.Intent</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">android.graphics.Color</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">android.os.Build</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">android.os.Bundle</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">android.support.v4.view.PagerAdapter</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">android.support.v4.view.ViewPager</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">android.support.v7.app.AppCompatActivity</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">android.text.Html</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">android.view.LayoutInflater</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">android.view.View</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">android.view.ViewGroup</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">android.view.Window</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">android.view.WindowManager</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">android.widget.Button</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">android.widget.LinearLayout</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">android.widget.TextView</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">WelcomeActivity</span> <span class="kd">extends</span> <span class="n">AppCompatActivity</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">ViewPager</span> <span class="n">viewPager</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">MyViewPagerAdapter</span> <span class="n">myViewPagerAdapter</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">LinearLayout</span> <span class="n">dotsLayout</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">TextView</span><span class="o">[]</span> <span class="n">dots</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kt">int</span><span class="o">[]</span> <span class="n">layouts</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">Button</span> <span class="n">btnSkip</span><span class="o">,</span> <span class="n">btnNext</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">PrefManager</span> <span class="n">prefManager</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">(</span><span class="n">savedInstanceState</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// Checking for first time launch - before calling setContentView()</span>
+</span><span class='line'>        <span class="n">prefManager</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">PrefManager</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(!</span><span class="n">prefManager</span><span class="o">.</span><span class="na">isFirstTimeLaunch</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">launchHomeScreen</span><span class="o">();</span>
+</span><span class='line'>            <span class="n">finish</span><span class="o">();</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// Making notification bar transparent</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">Build</span><span class="o">.</span><span class="na">VERSION</span><span class="o">.</span><span class="na">SDK_INT</span> <span class="o">&gt;=</span> <span class="mi">21</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">getWindow</span><span class="o">().</span><span class="na">getDecorView</span><span class="o">().</span><span class="na">setSystemUiVisibility</span><span class="o">(</span><span class="n">View</span><span class="o">.</span><span class="na">SYSTEM_UI_FLAG_LAYOUT_STABLE</span> <span class="o">|</span> <span class="n">View</span><span class="o">.</span><span class="na">SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">setContentView</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">activity_welcome</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">viewPager</span> <span class="o">=</span> <span class="o">(</span><span class="n">ViewPager</span><span class="o">)</span> <span class="n">findViewById</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">view_pager</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">dotsLayout</span> <span class="o">=</span> <span class="o">(</span><span class="n">LinearLayout</span><span class="o">)</span> <span class="n">findViewById</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">layoutDots</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">btnSkip</span> <span class="o">=</span> <span class="o">(</span><span class="n">Button</span><span class="o">)</span> <span class="n">findViewById</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">btn_skip</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">btnNext</span> <span class="o">=</span> <span class="o">(</span><span class="n">Button</span><span class="o">)</span> <span class="n">findViewById</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">btn_next</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// layouts of all welcome sliders</span>
+</span><span class='line'>        <span class="c1">// add few more layouts if you want</span>
+</span><span class='line'>        <span class="n">layouts</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[]{</span>
+</span><span class='line'>                <span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">welcome_slide1</span><span class="o">,</span>
+</span><span class='line'>                <span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">welcome_slide2</span><span class="o">,</span>
+</span><span class='line'>                <span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">welcome_slide3</span><span class="o">,</span>
+</span><span class='line'>                <span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">welcome_slide4</span><span class="o">};</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// adding bottom dots</span>
+</span><span class='line'>        <span class="n">addBottomDots</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// making notification bar transparent</span>
+</span><span class='line'>        <span class="n">changeStatusBarColor</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">myViewPagerAdapter</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">MyViewPagerAdapter</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">viewPager</span><span class="o">.</span><span class="na">setAdapter</span><span class="o">(</span><span class="n">myViewPagerAdapter</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">viewPager</span><span class="o">.</span><span class="na">addOnPageChangeListener</span><span class="o">(</span><span class="n">viewPagerPageChangeListener</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">btnSkip</span><span class="o">.</span><span class="na">setOnClickListener</span><span class="o">(</span><span class="k">new</span> <span class="n">View</span><span class="o">.</span><span class="na">OnClickListener</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>            <span class="nd">@Override</span>
+</span><span class='line'>            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onClick</span><span class="o">(</span><span class="n">View</span> <span class="n">v</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>                <span class="n">launchHomeScreen</span><span class="o">();</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>        <span class="o">});</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">btnNext</span><span class="o">.</span><span class="na">setOnClickListener</span><span class="o">(</span><span class="k">new</span> <span class="n">View</span><span class="o">.</span><span class="na">OnClickListener</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>            <span class="nd">@Override</span>
+</span><span class='line'>            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onClick</span><span class="o">(</span><span class="n">View</span> <span class="n">v</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>                <span class="c1">// checking for last page</span>
+</span><span class='line'>                <span class="c1">// if last page home screen will be launched</span>
+</span><span class='line'>                <span class="kt">int</span> <span class="n">current</span> <span class="o">=</span> <span class="n">getItem</span><span class="o">(+</span><span class="mi">1</span><span class="o">);</span>
+</span><span class='line'>                <span class="k">if</span> <span class="o">(</span><span class="n">current</span> <span class="o">&lt;</span> <span class="n">layouts</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>                    <span class="c1">// move to next screen</span>
+</span><span class='line'>                    <span class="n">viewPager</span><span class="o">.</span><span class="na">setCurrentItem</span><span class="o">(</span><span class="n">current</span><span class="o">);</span>
+</span><span class='line'>                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>                    <span class="n">launchHomeScreen</span><span class="o">();</span>
+</span><span class='line'>                <span class="o">}</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>        <span class="o">});</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">addBottomDots</span><span class="o">(</span><span class="kt">int</span> <span class="n">currentPage</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">dots</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TextView</span><span class="o">[</span><span class="n">layouts</span><span class="o">.</span><span class="na">length</span><span class="o">];</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="kt">int</span><span class="o">[]</span> <span class="n">colorsActive</span> <span class="o">=</span> <span class="n">getResources</span><span class="o">().</span><span class="na">getIntArray</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">array</span><span class="o">.</span><span class="na">array_dot_active</span><span class="o">);</span>
+</span><span class='line'>        <span class="kt">int</span><span class="o">[]</span> <span class="n">colorsInactive</span> <span class="o">=</span> <span class="n">getResources</span><span class="o">().</span><span class="na">getIntArray</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">array</span><span class="o">.</span><span class="na">array_dot_inactive</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">dotsLayout</span><span class="o">.</span><span class="na">removeAllViews</span><span class="o">();</span>
+</span><span class='line'>        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">dots</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">dots</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">TextView</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">dots</span><span class="o">[</span><span class="n">i</span><span class="o">].</span><span class="na">setText</span><span class="o">(</span><span class="n">Html</span><span class="o">.</span><span class="na">fromHtml</span><span class="o">(</span><span class="s">&quot;&amp;#8226;&quot;</span><span class="o">));</span>
+</span><span class='line'>            <span class="n">dots</span><span class="o">[</span><span class="n">i</span><span class="o">].</span><span class="na">setTextSize</span><span class="o">(</span><span class="mi">35</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">dots</span><span class="o">[</span><span class="n">i</span><span class="o">].</span><span class="na">setTextColor</span><span class="o">(</span><span class="n">colorsInactive</span><span class="o">[</span><span class="n">currentPage</span><span class="o">]);</span>
+</span><span class='line'>            <span class="n">dotsLayout</span><span class="o">.</span><span class="na">addView</span><span class="o">(</span><span class="n">dots</span><span class="o">[</span><span class="n">i</span><span class="o">]);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">dots</span><span class="o">.</span><span class="na">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span>
+</span><span class='line'>            <span class="n">dots</span><span class="o">[</span><span class="n">currentPage</span><span class="o">].</span><span class="na">setTextColor</span><span class="o">(</span><span class="n">colorsActive</span><span class="o">[</span><span class="n">currentPage</span><span class="o">]);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="kt">int</span> <span class="nf">getItem</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">viewPager</span><span class="o">.</span><span class="na">getCurrentItem</span><span class="o">()</span> <span class="o">+</span> <span class="n">i</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">launchHomeScreen</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">prefManager</span><span class="o">.</span><span class="na">setFirstTimeLaunch</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">startActivity</span><span class="o">(</span><span class="k">new</span> <span class="nf">Intent</span><span class="o">(</span><span class="n">WelcomeActivity</span><span class="o">.</span><span class="na">this</span><span class="o">,</span> <span class="n">MainActivity</span><span class="o">.</span><span class="na">class</span><span class="o">));</span>
+</span><span class='line'>        <span class="n">finish</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//  viewpager change listener</span>
+</span><span class='line'>    <span class="n">ViewPager</span><span class="o">.</span><span class="na">OnPageChangeListener</span> <span class="n">viewPagerPageChangeListener</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ViewPager</span><span class="o">.</span><span class="na">OnPageChangeListener</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nd">@Override</span>
+</span><span class='line'>        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onPageSelected</span><span class="o">(</span><span class="kt">int</span> <span class="n">position</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">addBottomDots</span><span class="o">(</span><span class="n">position</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="c1">// changing the next button text &#39;NEXT&#39; / &#39;GOT IT&#39;</span>
+</span><span class='line'>            <span class="k">if</span> <span class="o">(</span><span class="n">position</span> <span class="o">==</span> <span class="n">layouts</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>                <span class="c1">// last page. make button text to GOT IT</span>
+</span><span class='line'>                <span class="n">btnNext</span><span class="o">.</span><span class="na">setText</span><span class="o">(</span><span class="n">getString</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">string</span><span class="o">.</span><span class="na">start</span><span class="o">));</span>
+</span><span class='line'>                <span class="n">btnSkip</span><span class="o">.</span><span class="na">setVisibility</span><span class="o">(</span><span class="n">View</span><span class="o">.</span><span class="na">GONE</span><span class="o">);</span>
+</span><span class='line'>            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>                <span class="c1">// still pages are left</span>
+</span><span class='line'>                <span class="n">btnNext</span><span class="o">.</span><span class="na">setText</span><span class="o">(</span><span class="n">getString</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">string</span><span class="o">.</span><span class="na">next</span><span class="o">));</span>
+</span><span class='line'>                <span class="n">btnSkip</span><span class="o">.</span><span class="na">setVisibility</span><span class="o">(</span><span class="n">View</span><span class="o">.</span><span class="na">VISIBLE</span><span class="o">);</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nd">@Override</span>
+</span><span class='line'>        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onPageScrolled</span><span class="o">(</span><span class="kt">int</span> <span class="n">arg0</span><span class="o">,</span> <span class="kt">float</span> <span class="n">arg1</span><span class="o">,</span> <span class="kt">int</span> <span class="n">arg2</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nd">@Override</span>
+</span><span class='line'>        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onPageScrollStateChanged</span><span class="o">(</span><span class="kt">int</span> <span class="n">arg0</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">};</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/**</span>
+</span><span class='line'><span class="cm">     * Making notification bar transparent</span>
+</span><span class='line'><span class="cm">     */</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">changeStatusBarColor</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">Build</span><span class="o">.</span><span class="na">VERSION</span><span class="o">.</span><span class="na">SDK_INT</span> <span class="o">&gt;=</span> <span class="n">Build</span><span class="o">.</span><span class="na">VERSION_CODES</span><span class="o">.</span><span class="na">LOLLIPOP</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">Window</span> <span class="n">window</span> <span class="o">=</span> <span class="n">getWindow</span><span class="o">();</span>
+</span><span class='line'>            <span class="n">window</span><span class="o">.</span><span class="na">addFlags</span><span class="o">(</span><span class="n">WindowManager</span><span class="o">.</span><span class="na">LayoutParams</span><span class="o">.</span><span class="na">FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">window</span><span class="o">.</span><span class="na">setStatusBarColor</span><span class="o">(</span><span class="n">Color</span><span class="o">.</span><span class="na">TRANSPARENT</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/**</span>
+</span><span class='line'><span class="cm">     * View pager adapter</span>
+</span><span class='line'><span class="cm">     */</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyViewPagerAdapter</span> <span class="kd">extends</span> <span class="n">PagerAdapter</span> <span class="o">{</span>
+</span><span class='line'>        <span class="kd">private</span> <span class="n">LayoutInflater</span> <span class="n">layoutInflater</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="kd">public</span> <span class="nf">MyViewPagerAdapter</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nd">@Override</span>
+</span><span class='line'>        <span class="kd">public</span> <span class="n">Object</span> <span class="nf">instantiateItem</span><span class="o">(</span><span class="n">ViewGroup</span> <span class="n">container</span><span class="o">,</span> <span class="kt">int</span> <span class="n">position</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">layoutInflater</span> <span class="o">=</span> <span class="o">(</span><span class="n">LayoutInflater</span><span class="o">)</span> <span class="n">getSystemService</span><span class="o">(</span><span class="n">Context</span><span class="o">.</span><span class="na">LAYOUT_INFLATER_SERVICE</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">View</span> <span class="n">view</span> <span class="o">=</span> <span class="n">layoutInflater</span><span class="o">.</span><span class="na">inflate</span><span class="o">(</span><span class="n">layouts</span><span class="o">[</span><span class="n">position</span><span class="o">],</span> <span class="n">container</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">container</span><span class="o">.</span><span class="na">addView</span><span class="o">(</span><span class="n">view</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">return</span> <span class="n">view</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nd">@Override</span>
+</span><span class='line'>        <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getCount</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">layouts</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nd">@Override</span>
+</span><span class='line'>        <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isViewFromObject</span><span class="o">(</span><span class="n">View</span> <span class="n">view</span><span class="o">,</span> <span class="n">Object</span> <span class="n">obj</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">view</span> <span class="o">==</span> <span class="n">obj</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>        <span class="nd">@Override</span>
+</span><span class='line'>        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">destroyItem</span><span class="o">(</span><span class="n">ViewGroup</span> <span class="n">container</span><span class="o">,</span> <span class="kt">int</span> <span class="n">position</span><span class="o">,</span> <span class="n">Object</span> <span class="n">object</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">View</span> <span class="n">view</span> <span class="o">=</span> <span class="o">(</span><span class="n">View</span><span class="o">)</span> <span class="n">object</span><span class="o">;</span>
+</span><span class='line'>            <span class="n">container</span><span class="o">.</span><span class="na">removeView</span><span class="o">(</span><span class="n">view</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Son olarakta <code>AndroidManifest.xml</code> &lsquo;de WelcomeActivity'yi launcher activity olarak tanımlıyoruz.</p>
+
+<figure class='code'><figcaption><span>AndrışdManifest.xml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+</span><span class='line'><span class="nt">&lt;manifest</span> <span class="na">xmlns:android=</span><span class="s">&quot;http://schemas.android.com/apk/res/android&quot;</span>
+</span><span class='line'>    <span class="na">package=</span><span class="s">&quot;io.github.ensr.introslider&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;application</span>
+</span><span class='line'>        <span class="na">android:allowBackup=</span><span class="s">&quot;true&quot;</span>
+</span><span class='line'>        <span class="na">android:icon=</span><span class="s">&quot;@mipmap/ic_launcher&quot;</span>
+</span><span class='line'>        <span class="na">android:label=</span><span class="s">&quot;@string/app_name&quot;</span>
+</span><span class='line'>        <span class="na">android:supportsRtl=</span><span class="s">&quot;true&quot;</span>
+</span><span class='line'>        <span class="na">android:theme=</span><span class="s">&quot;@style/AppTheme&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;activity</span> <span class="na">android:name=</span><span class="s">&quot;info.androidhive.introslider.WelcomeActivity&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;intent-filter&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;action</span> <span class="na">android:name=</span><span class="s">&quot;android.intent.action.MAIN&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="nt">&lt;category</span> <span class="na">android:name=</span><span class="s">&quot;android.intent.category.LAUNCHER&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/intent-filter&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/activity&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;activity</span>
+</span><span class='line'>            <span class="na">android:name=</span><span class="s">&quot;info.androidhive.introslider.MainActivity&quot;</span>
+</span><span class='line'>            <span class="na">android:label=</span><span class="s">&quot;@string/title_activity_welcome&quot;</span>
+</span><span class='line'>            <span class="na">android:theme=</span><span class="s">&quot;@style/AppTheme.NoActionBar&quot;</span><span class="nt">&gt;&lt;/activity&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/application&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/manifest&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Uygulamamızı çalıştırdığımızda şu şekilde bir görüntü ile karşılaşmamız gerekmektedir.</p>
+
+<p><img class="center" src="http://ensr.github.io/images/android-welcome-slider.gif"></p>
+
+<p>İyi kodlamalar arkadaşlar.</p>
 ]]></content>
   </entry>
   
