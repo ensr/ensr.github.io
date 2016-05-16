@@ -9,7 +9,7 @@
   <meta name="author" content="Ensar Hamzaçebi">
 
   
-  <meta name="description" content="Merhaba bugün sizlere retrofit kütüphanesinin nasıl kullanıldığından bahsetmeye çalışıcam. Retrofit'in kolay kullanım ve performans gibi konularda &hellip;">
+  <meta name="description" content="Android'de face detection işlemini gerçekleştirmek için Google Play Service'i kullanabiliriz.Bunun için yapmamız gereken ilk şey google play service &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://ensr.github.io">
+  <link rel="canonical" href="http://ensr.github.io/posts/3">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Ensar Hamzaçebi" type="application/atom+xml">
@@ -99,7 +99,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2016/05/16/android-retrofit-http-kutuphanesi-kullanimi/">Android Retrofit HTTP Kütüphanesi Kullanımı</a></h1>
+      <h1 class="entry-title"><a href="/blog/2016/02/18/android-face-detection-01/">Android Face Detection 01 - Başlangıç</a></h1>
     
     
       <p class="meta">
@@ -108,41 +108,9 @@
 
 
 
-<time class='entry-date' datetime='2016-05-16T17:37:55+03:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>16</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>5:37 pm</span></time>
+<time class='entry-date' datetime='2016-02-18T15:45:52+02:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>3:45 pm</span></time>
         
-         | <a href="/blog/2016/05/16/android-retrofit-http-kutuphanesi-kullanimi/#disqus_thread">Comments</a>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Merhaba bugün sizlere <a href="http://square.github.io/retrofit/">retrofit</a> kütüphanesinin nasıl kullanıldığından bahsetmeye çalışıcam. Retrofit'in kolay kullanım ve performans gibi konularda volleyden çok daha iyi olduğunu söyleyebiliriz. Bu kütüphaneyi kullanarak bütün network işlemlerinizi çok kolay bir şekilde gerçekleştirebilirsiniz. Şimdi örnek olarak biraz json download edip bir liste olarak kullanıcağımız bir RecyclerView içerisinde gösterelim.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/05/13/android-intro-slider-olusturma/">Android Intro Slider Oluşturma</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2016-05-13T11:17:55+03:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>11:17 am</span></time>
-        
-         | <a href="/blog/2016/05/13/android-intro-slider-olusturma/#disqus_thread">Comments</a>
+         | <a href="/blog/2016/02/18/android-face-detection-01/#disqus_thread">Comments</a>
         
         
       </p>
@@ -150,128 +118,17 @@
   </header>
 
 
-  <div class="entry-content"><p><img class="center" src="/images/android_intro_slider.png"></p>
+  <div class="entry-content"><p><img class="center" src="/images/face_detect.png"></p>
 
-<p>Merhaba arkadaşlar, bugün sizlere android intro slider oluşturmayı anlatıcam. Bildiğiniz gibi birçok geliştirici yeni kullanıcılarına uyulamanın çalışma prensibini hızlıca anlatabilmek için intro sliderlardan faydalanmaktadır. Hadi başlayalım.</p>
+<p>Android'de face detection işlemini gerçekleştirmek için Google Play Service'i kullanabiliriz.Bunun için yapmamız gereken ilk şey google play service'in gradle dependences'ini projemize eklemek olacaktır.</p>
+
+<p>Android Studio'da oluşturduğumuz projemizin /app dizini altındaki build.gradle dosyasını açarak dependencies kısmına aşşağıdaki satırı ekliyoruz ve Sync ediyoruz.</p>
 
 </div>
   
   
     <footer>
-      <a rel="full-article" href="/blog/2016/05/13/android-intro-slider-olusturma/">Devam &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/03/10/google-speech-to-text-sesi-yaziya-donusturme/">Google Speech to Text - Sesi Yazıya Dönüştürme</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2016-03-10T16:35:02+02:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>4:35 pm</span></time>
-        
-         | <a href="/blog/2016/03/10/google-speech-to-text-sesi-yaziya-donusturme/#disqus_thread">Comments</a>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="center" src="/images/speechtotext3.jpg"></p>
-
-<p>Android speech to text'i inbuild özellik olarak sunmaktadır. Uygulamanızın kullanıcılarla olan etkileşimini arttırmak istiyorsanız, speech to text çok işinize yarayabilir. Google speech to text'i kullanarak kullanıcılardan konuşmasını isteyebilir ve söylediklerine göre işlemler yaptırarak harika işler çıkartabilirsiniz.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2016/03/10/google-speech-to-text-sesi-yaziya-donusturme/">Devam &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/03/09/android-studio-device-null-hatasi/">Android Studio Device Null Hatası</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2016-03-09T13:29:30+02:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>1:29 pm</span></time>
-        
-         | <a href="/blog/2016/03/09/android-studio-device-null-hatasi/#disqus_thread">Comments</a>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Android Studio ile yazdığınız bir projeyi telefonunuzda ve ya tablediniz de denemek istediğinizde device'ı null olarak görüyorsanız ve Compatible bölümünde <code>No, minSdk(API 14) &gt; deviceSdk(API 1)</code> yazısını görüyorsanız. Bu hatanın sebebi adb doğru izinler ile bağlantı kuramadığındandır. Bunu düzeltmenin çok kolay bir yolu var.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2016/03/09/android-studio-device-null-hatasi/">Devam &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/02/23/her-android-developerin-bilmesi-gereken-kutuphaneler-02/">Her Android Developer'in Bilmesi Gereken Kütüphaneler 02</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2016-02-23T14:54:28+02:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2016</span></span> <span class='time'>2:54 pm</span></time>
-        
-         | <a href="/blog/2016/02/23/her-android-developerin-bilmesi-gereken-kutuphaneler-02/#disqus_thread">Comments</a>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="center" src="/images/libraries.jpg"></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2016/02/23/her-android-developerin-bilmesi-gereken-kutuphaneler-02/">Devam &rarr;</a>
+      <a rel="full-article" href="/blog/2016/02/18/android-face-detection-01/">Devam &rarr;</a>
     </footer>
   
 
@@ -280,9 +137,9 @@
   
   <div class="pagination">
     
-      <a class="prev" href="/posts/2">&larr; Older</a>
-    
     <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/posts/2">Newer &rarr;</a>
     
   </div>
 </div>
